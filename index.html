@@ -4,18 +4,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inicio</title>
+  <title>Inicio - REPARATEC</title>
   <link rel="stylesheet" href="/src/css/index.css" />
 </head>
 
 <body>
   <include src="header.html"></include>
 
-  <main>
-    <h1>Hola</h1>
-    <p id="mensaje"></p>
+  <main class="hero-container">
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>Conectamos donaciones para transformar la educación</h1>
+        <p class="hero-description">
+          REPARATEC es un sistema dedicado al registro, reacondicionamiento técnico, control por código QR y asignación inteligente de dispositivos electrónicos a estudiantes.
+        </p>
+        <div class="hero-actions">
+          <a href="./login.html" class="btn btn-hero">Iniciar Sesión / Acceder</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resumen de Módulos del Sistema -->
+    <section class="features-section">
+      <h2>Servicios y Alcance del Sistema</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <h3>Donación e Inventario</h3>
+          <p>Control de equipos recibidos, trazabilidad e historial digital de movimientos.</p>
+        </div>
+        <div class="card">
+          <h3>Diagnóstico y Reparaciones</h3>
+          <p>Gestión de piezas de repuesto, mantenimientos técnicos y costos estimados.</p>
+        </div>
+        <div class="card">
+          <h3>Asignación Inteligente</h3>
+          <p>Recomendación de computadoras según el perfil y las necesidades del beneficiario.</p>
+        </div>
+      </div>
+    </section>
   </main>
-  
+
   <include src="footer.html"></include>
 
   <script type="module" src="/src/js/main.js"></script>
