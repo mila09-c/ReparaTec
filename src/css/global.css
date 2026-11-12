@@ -1,8 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --color-primary: #059669;    
-  --color-text: #1F2937;       
-  --color-bg: #F9FAFB;         
-  --color-white: #FFFFFF;
+  --color-positivo: #059669;
+  --color-positivo-hover: #047857;
+  --color-primario: #2563EB;
+  --color-primario-hover: #1D4ED8;
+  --color-texto: #1F2937;
+  --color-texto-suave: #4B5563;
+  --color-fondo: #F9FAFB;
+  --color-blanco: #FFFFFF;
+  --color-borde: #E5E7EB;
+  --color-error: #DC2626;
 }
 
 * {
@@ -12,9 +20,10 @@
 }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  line-height: 1.5;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,13 +31,39 @@ body {
 
 main {
   flex: 1;
-  padding: 2rem 1rem;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
+  padding: 2rem 1.5rem;
 }
 
 a {
+  color: var(--color-primario);
   text-decoration: none;
-  color: inherit;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-primario-hover);
+}
+
+.btn-positivo {
+  background-color: var(--color-positivo);
+  color: var(--color-blanco);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-positivo:hover {
+  background-color: var(--color-positivo-hover);
 }

@@ -1,57 +1,77 @@
-header {
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+@import './global.css';
+
+.site-header {
+  background-color: var(--color-blanco);
+  border-bottom: 1px solid var(--color-borde);
+  padding: 0.85rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .header-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.header-brand {
+.brand {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-}
-
-.header-logo {
-  height: 40px;
-  width: auto;
-  object-fit: contain;
-}
-
-.header-title {
-  font-size: 1.25rem;
+  color: var(--color-texto);
   font-weight: 700;
-  color: var(--color-white);
+  font-size: 1.25rem;
 }
 
-.header-nav ul {
+.brand img {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-borde);
+}
+
+.nav-links {
   display: flex;
-  list-style: none;
+  align-items: center;
   gap: 1.5rem;
+  list-style: none;
 }
 
-.header-nav a {
-  color: var(--color-white);
+.nav-links a {
   font-weight: 500;
-  transition: opacity 0.2s;
+  font-size: 0.95rem;
+  color: var(--color-texto);
 }
 
-.header-nav a:hover {
-  opacity: 0.8;
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--color-primario);
 }
 
-/* Responsivo para móviles */
-@media (max-width: 640px) {
-  .header-container {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-  }
+.user-session {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid var(--color-borde);
+  color: var(--color-texto);
+  padding: 0.4rem 0.85rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.btn-logout:hover {
+  border-color: var(--color-primario);
+  color: var(--color-primario);
 }
