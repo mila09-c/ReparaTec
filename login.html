@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión — ReparaTec</title>
+  <link rel="stylesheet" href="/src/css/login.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main class="login-wrapper">
+    <section class="login-card" aria-labelledby="login-title">
+      <div class="login-header">
+        <img src="/src/image/logo.jpg" alt="Logo ReparaTec" />
+        <h1 id="login-title">Acceso a ReparaTec</h1>
+        <p>Ingresa tus credenciales para continuar</p>
+      </div>
+
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="Correo">Correo electrónico *</label>
+          <input
+            type="email"
+            id="Correo"
+            name="Correo"
+            placeholder="usuario@reparatec.org"
+            required
+          />
+          <span class="error-msg" id="error-Correo"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Contrasena_hash">Contraseña *</label>
+          <input
+            type="password"
+            id="Contrasena_hash"
+            name="Contrasena_hash"
+            placeholder="••••••••"
+            required
+          />
+          <span class="error-msg" id="error-Contrasena"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="ID_Rol">Rol de acceso *</label>
+          <select id="ID_Rol" name="ID_Rol" required></select>
+          <span class="error-msg" id="error-Rol"></span>
+        </div>
+
+        <button type="submit" class="btn-positivo">Iniciar sesión</button>
+      </form>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="/src/js/login.js"></script>
+</body>
+</html>
