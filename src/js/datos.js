@@ -178,7 +178,8 @@ export async function obtenerEquipos() {
 }
 
 export async function obtenerEquipo(id) {
-  return EQUIPOS.find((e) => e.ID_Equipo === Number(id)) || null;
+  const equipoEncontrado = EQUIPOS.find((e) => e.ID_Equipo === Number(id));
+  return equipoEncontrado || null;
 }
 
 export async function obtenerSolicitudes() {
