@@ -1,5 +1,5 @@
 import { cargarParciales } from './main.js';
-import { obtenerEquipo } from './datos.js';
+import { obtenerEquipo } from './datos_equipo.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarParciales({ mostrarNav: true });
@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (!idEquipo) {
     container.innerHTML = `
-      <div class="empty-state" style="background: white; border: 1px solid var(--color-borde); border-radius: 0.75rem;">
+      <div class="empty-state" style="background: white; border: 1px solid var(--color-borde); border-radius: 0.75rem; padding: 2rem; text-align: center;">
         <h2>ID no especificado</h2>
         <p>No se proporcionó un identificador de equipo en la dirección URL.</p>
-        <a href="/equipos.html" class="btn-positivo">Regresar a la lista</a>
+        <a href="/equipos.html" class="btn-positivo" style="margin-top: 1rem;">Regresar a la lista</a>
       </div>
     `;
     return;
@@ -23,10 +23,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (!equipo) {
     container.innerHTML = `
-      <div class="empty-state" style="background: white; border: 1px solid var(--color-borde); border-radius: 0.75rem;">
+      <div class="empty-state" style="background: white; border: 1px solid var(--color-borde); border-radius: 0.75rem; padding: 2rem; text-align: center;">
         <h2>Registro no encontrado</h2>
         <p>El equipo solicitado con ID <strong>#${idEquipo}</strong> no existe o fue eliminado de la base de datos.</p>
-        <a href="/equipos.html" class="btn-positivo">Regresar a la lista</a>
+        <a href="/equipos.html" class="btn-positivo" style="margin-top: 1rem;">Regresar a la lista</a>
       </div>
     `;
     return;

@@ -1,5 +1,5 @@
 import { cargarParciales } from './main.js';
-import { obtenerEquipos } from './datos.js';
+import { obtenerEquipos } from './datos_equipo.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarParciales({ mostrarNav: true });
@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (!equipos || equipos.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="6" class="empty-state">
+        <td colspan="6" class="empty-state" style="text-align: center; padding: 2rem;">
           <p>No hay equipos registrados en el sistema actualmente.</p>
-          <a href="/formulario-equipo.html" class="btn-positivo">Registrar el primer equipo</a>
+          <a href="/formulario-equipo.html" class="btn-positivo" style="margin-top: 1rem;">Registrar el primer equipo</a>
         </td>
       </tr>
     `;
