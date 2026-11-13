@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const pass = passInput.value.trim();
     const rol = selectRol.value;
 
-    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const regexCorreo = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
     if (!correo) {
       errCorreo.textContent = 'El correo electrónico es obligatorio.';
