@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventario de Equipos — ReparaTec</title>
+  <link rel="stylesheet" href="/src/css/home.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main>
+    <div class="table-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <div>
+        <h1 class="section-title" style="font-size: 1.5rem; font-weight: 700;">Inventario de Equipos (EQUIPOS)</h1>
+        <p style="color: var(--color-texto-suave); font-size: 0.9rem;">Gestión y control del hardware disponible en la plataforma.</p>
+      </div>
+      <a href="/formulario-equipo.html" class="btn-positivo">+ Registrar Equipo</a>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Marca y Modelo</th>
+            <th>Procesador / RAM</th>
+            <th>Sistema Operativo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-equipos-body">
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="/src/js/equipos-lista.js"></script>
+</body>
+</html>

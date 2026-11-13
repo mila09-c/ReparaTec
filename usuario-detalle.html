@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalle de Usuario - REPARATEC</title>
+    <link rel="stylesheet" href="/src/css/home.css" />
+    <link rel="stylesheet" href="/src/css/usuarios.css" />
+  </head>
+  <body>
+    <div id ="header-container"></div>
+
+    <main class="container">
+      <div id="detalle-usuario" class="card">
+        <h2>Detalle de Usuario</h2>
+        <div class="detail-group"><label>ID:</label> <span id="det-id"></span></div>
+        <div class="detail-group"><label>Nombre:</label> <span id="det-nombre"></span></div>
+        <div class="detail-group"><label>Correo:</label> <span id="det-correo"></span></div>
+        <div class="detail-group"><label>Rol:</label> <span id="det-rol"></span></div>
+        <div class="detail-group"><label>Estado:</label> <span id="det-estado"></span></div>
+
+        <div class="form-actions">
+          <a href="usuarios-lista.html" class="btn btn-secondary">Volver a la lista</a>
+          <a id="btn-editar-detalle" href="#" class="btn btn-primary">Editar</a>
+        </div>
+      </div>
+
+      <div id="mensaje-no-existe" class="card error-message" style="display: none;">
+        <p>El usuario solicitado no existe.</p>
+        <a href="usuarios-lista.html" class="btn btn-secondary">Volver a la lista</a>
+      </div>
+    </main>
+
+       <div id="footer-container"></div>
+
+    <script type="module" src="./src/js/main.js"></script>
+    <script type="module" src="./src/js/usuarios.js"></script>
+  </body>
+</html>

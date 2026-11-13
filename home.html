@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inicio — ReparaTec</title>
+  <link rel="stylesheet" href="/src/css/home.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main>
+    <section class="welcome-banner">
+      <div>
+        <h1 id="mensaje-bienvenida">Panel Principal</h1>
+        <p>Selecciona un módulo para gestionar el ciclo de vida de los equipos.</p>
+      </div>
+      <a href="/home.html#equipos" class="btn-positivo">Ver inventario</a>
+    </section>
+
+    <section aria-labelledby="titulo-modulos">
+      <h2 class="section-title" id="titulo-modulos">Módulos del Sistema</h2>
+      <div class="modules-grid" id="modulos-grid"></div>
+    </section>
+
+    <section id="equipos" aria-labelledby="titulo-equipos">
+      <h2 class="section-title" id="titulo-equipos">Equipos Recientes (EQUIPOS)</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Codigo_inventario</th>
+              <th>Marca / Modelo</th>
+              <th>Especificaciones</th>
+              <th>Sistema_operativo</th>
+              <th>Estado_equipo</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-equipos-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="/src/js/home.js"></script>
+</body>
+</html>

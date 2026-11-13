@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario de Usuario - REPARATEC</title>
+    <link rel="stylesheet" href="/src/css/home.css" />
+    <link rel="stylesheet" href="/src/css/usuarios.css" />
+  </head>
+  <body>
+    <div id ="header-container"></div>
+
+    <main class="container">
+      <form id="form-usuario" class="card" novalidate>
+        <h2 id="form-titulo">Agregar Usuario</h2>
+
+        <div class="form-group">
+          <label for="nombre">Nombre Completo *</label>
+          <input type="text" id="nombre" required />
+        </div>
+
+        <div class="form-group">
+          <label for="correo">Correo Electrónico *</label>
+          <input type="email" id="correo" required />
+        </div>
+
+        <div class="form-group">
+          <label for="rol">Rol *</label>
+          <select id="rol" required>
+            <option value="">Selecciona un rol...</option>
+            <option value="Administrador">Administrador</option>
+            <option value="Técnico">Técnico</option>
+            <option value="Estudiante">Estudiante</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="estado">Estado *</label>
+          <select id="estado" required>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <a href="usuarios-lista.html" class="btn btn-secondary">Cancelar</a>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </main>
+
+       <div id="footer-container"></div>
+
+    <script type="module" src="./src/js/main.js"></script>
+    <script type="module" src="./src/js/usuarios.js"></script>
+  </body>
+</html>

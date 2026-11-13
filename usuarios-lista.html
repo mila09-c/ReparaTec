@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Usuarios - REPARATEC</title>
+    <link rel="stylesheet" href="/src/css/home.css" />
+    <link rel="stylesheet" href="/src/css/usuarios.css" />
+  </head>
+  <body>
+    <div id ="header-container"></div>
+
+    <main class="container">
+      <div class="page-header">
+        <h2>Gestión de Usuarios</h2>
+        <a href="usuario-form.html" class="btn btn-primary">+ Nuevo Usuario</a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Correo</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-usuarios-body"></tbody>
+        </table>
+        <p id="mensaje-vacio" class="empty-message" style="display: none;">
+          No hay usuarios registrados en el sistema.
+        </p>
+      </div>
+    </main>
+
+       <div id="footer-container"></div>
+
+    <script type="module" src="./src/js/main.js"></script>
+    <script type="module" src="./src/js/usuarios.js"></script>
+  </body>
+</html>
