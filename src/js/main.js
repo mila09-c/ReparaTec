@@ -16,13 +16,13 @@ export async function cargarParciales({ mostrarNav = true } = {}) {
   const footerSlot = document.getElementById('footer-container');
 
   if (headerSlot) {
-    const resHeader = await fetch('/src/partials/header.html');
+    const resHeader = await fetch('/partials/header.html');
     headerSlot.innerHTML = await resHeader.text();
     inicializarHeader(mostrarNav);
   }
 
   if (footerSlot) {
-    const resFooter = await fetch('/src/partials/footer.html');
+    const resFooter = await fetch('/partials/footer.html');
     footerSlot.innerHTML = await resFooter.text();
     inicializarFooter();
   }
