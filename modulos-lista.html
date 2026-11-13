@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulos del Sistema - REPARATEC</title>
+  <link rel="stylesheet" href="/src/css/modulos.css" />
+</head>
+<body>
+  <include src="header.html"></include>
+
+  <main class="modulos-container">
+    <div class="modulos-header">
+      <h1>Módulos del Sistema</h1>
+      <a href="/modulo-form.html" class="btn-primario">+ Nuevo Módulo</a>
+    </div>
+
+    <table class="tabla-modulos">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Ruta</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-modulos-body"></tbody>
+    </table>
+  </main>
+
+  <include src="footer.html"></include>
+  <script type="module" src="/src/js/modulos.js"></script>
+</body>
+</html>
