@@ -1,6 +1,7 @@
 import { obtenerModulos, obtenerModuloPorId } from './datos.js';
-
+import { cargarParciales } from './main.js';
 document.addEventListener('DOMContentLoaded', async () => {
+    await cargarParciales({ mostrarNav: true });
   const tablaBody = document.getElementById('tabla-modulos-body');
   const detalleContainer = document.getElementById('detalle-modulo-container');
   const formModulo = document.getElementById('form-modulo');
