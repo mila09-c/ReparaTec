@@ -1,5 +1,5 @@
-import { cargarParciales } from '../main.js';
-import { DONACIONES } from '../datos_equipo.js';
+import { cargarParciales } from './main.js';
+import { DONACIONES } from './datos_equipo.js';
 
 export const DONADORES = [
   { ID_Donador: 1, Tipo_donador: 'Empresa', Direccion: 'Blvd. Hermanos Serdan 450, Puebla, Pue.' },
