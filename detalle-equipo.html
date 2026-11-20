@@ -3,19 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Detalle de Equipo — ReparaTec</title>
+  <title>DETALLE DE EQUIPO — ReparaTec</title>
   <link rel="stylesheet" href="/src/css/home.css" />
 </head>
 <body>
   <div id="header-container"></div>
 
   <main>
-    <div style="margin-bottom: 1.5rem;">
-      <a href="/equipos.html">&larr; Volver al inventario</a>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <a href="/equipos.html" style="font-weight: 600;">&larr; Volver al inventario</a>
+      <div id="acciones-equipo"></div>
     </div>
 
-    <div id="detalle-container">
-    </div>
+    <section id="detalle-container" style="background: var(--color-blanco); border: 1px solid var(--color-borde); border-top: 5px solid var(--color-acento-oscuro); border-radius: 0.75rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 6px 16px rgba(30, 27, 75, 0.08);"></section>
+
+    <section style="margin-bottom: 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 class="section-title" style="margin-bottom: 0;">DIAGNOSTICOS / REPARACIONES</h2>
+        <a href="/reparaciones.html" class="module-link">Ir al Taller &rarr;</a>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Problema Detectado</th>
+              <th>Trabajo Realizado</th>
+              <th>Técnico</th>
+              <th>Costo Final</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-reparaciones-equipo"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">HISTORIAL_DE_EQUIPOS</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha y Hora</th>
+              <th>Tipo de Movimiento</th>
+              <th>Descripción</th>
+              <th>Ubicación Anterior</th>
+              <th>Ubicación Nueva</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-historial-equipo"></tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
   <div id="footer-container"></div>
