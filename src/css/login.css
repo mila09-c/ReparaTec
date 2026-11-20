@@ -10,13 +10,14 @@
 }
 
 .login-card {
-  background-color: var(--color-blanco);
+  background: linear-gradient(180deg, var(--color-blanco) 0%, #F8FAFC 100%);
   border: 1px solid var(--color-borde);
+  border-top: 5px solid var(--color-acento-oscuro);
   border-radius: 0.75rem;
   padding: 2.25rem;
   width: 100%;
-  max-width: 420px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  max-width: 440px;
+  box-shadow: 0 10px 25px rgba(30, 27, 75, 0.1);
 }
 
 .login-header {
@@ -30,12 +31,13 @@
   object-fit: cover;
   border-radius: 0.75rem;
   margin-bottom: 0.75rem;
+  border: 2px solid var(--color-acento-calido);
 }
 
 .login-header h1 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--color-texto);
+  color: var(--color-acento-oscuro);
 }
 
 .login-header p {
@@ -53,7 +55,7 @@
   font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 0.4rem;
-  color: var(--color-texto);
+  color: var(--color-acento-oscuro);
 }
 
 .form-group input,
@@ -72,7 +74,7 @@
 .form-group select:focus {
   outline: none;
   border-color: var(--color-primario);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
 }
 
 .error-msg {
