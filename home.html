@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inicio — ReparaTec</title>
+  <title>INICIO — ReparaTec</title>
   <link rel="stylesheet" href="/src/css/home.css" />
 </head>
 <body>
@@ -12,10 +12,9 @@
   <main>
     <section class="welcome-banner">
       <div>
-        <h1 id="mensaje-bienvenida">Panel Principal</h1>
-        <p>Selecciona un módulo para gestionar el ciclo de vida de los equipos.</p>
+        <h1 id="mensaje-bienvenida">PANEL PRINCIPAL — ReparaTec</h1>
       </div>
-      <a href="/home.html#equipos" class="btn-positivo">Ver inventario</a>
+      <a href="/equipos.html" class="btn-positivo">Ver Inventario</a>
     </section>
 
     <section aria-labelledby="titulo-modulos">
@@ -24,16 +23,20 @@
     </section>
 
     <section id="equipos" aria-labelledby="titulo-equipos">
-      <h2 class="section-title" id="titulo-equipos">Equipos Recientes (EQUIPOS)</h2>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 class="section-title" id="titulo-equipos" style="margin-bottom: 0;">EQUIPOS</h2>
+        <a href="/equipos.html" class="module-link">Ver todos &rarr;</a>
+      </div>
       <div class="table-container">
         <table>
           <thead>
             <tr>
-              <th>Codigo_inventario</th>
+              <th>Código</th>
               <th>Marca / Modelo</th>
-              <th>Especificaciones</th>
-              <th>Sistema_operativo</th>
-              <th>Estado_equipo</th>
+              <th>Hardware (CPU / RAM / Alm.)</th>
+              <th>Sistema Operativo</th>
+              <th>Perfil</th>
+              <th>Estado</th>
             </tr>
           </thead>
           <tbody id="tabla-equipos-body"></tbody>
