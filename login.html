@@ -17,13 +17,13 @@
         <p>Ingresa tus credenciales para continuar</p>
       </div>
 
-      <form id="login-form" novalidate>
+      <form id="form-login" novalidate>
         <div class="form-group">
           <label for="Correo">Correo electrónico *</label>
           <input
             type="email"
             id="Correo"
-            name="Correo"
+            name="email"
             placeholder="usuario@reparatec.org"
             required
           />
@@ -35,7 +35,7 @@
           <input
             type="password"
             id="Contrasena_hash"
-            name="Contrasena_hash"
+            name="password"
             placeholder="••••••••"
             required
           />
@@ -47,6 +47,7 @@
           <select id="ID_Rol" name="ID_Rol" required></select>
           <span class="error-msg" id="error-Rol"></span>
         </div>
+    <p class="error" id="error-login" hidden></p>
 
         <button type="submit" class="btn-positivo">Iniciar sesión</button>
       </form>
