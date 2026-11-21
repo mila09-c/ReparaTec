@@ -45,27 +45,27 @@ export const modulos = [
     id: 1,
     nombre: 'Gestión de Usuarios',
     titulo: 'Gestión de Usuarios',
-    total: 2,
+    total: 0,
     descripcion: 'Control de accesos, roles y cuentas del sistema.',
     ruta: '/usuarios-lista.html',
     estado: 'Activo'
   },
   {
     id: 2,
-    nombre: 'Módulos del Sistema',
-    titulo: 'Módulos del Sistema',
-    total: 4,
-    descripcion: 'Administración y configuración de los módulos de REPARATEC.',
-    ruta: '/modulos-lista.html',
+    nombre: 'Inventario de Equipos',
+    titulo: 'Inventario de Equipos',
+    total: 0,
+    descripcion: 'Registro y seguimiento de equipos de cómputo.',
+    ruta: '/equipos.html',
     estado: 'Activo'
   },
   {
     id: 3,
-    nombre: 'Inventario de Equipos',
-    titulo: 'Inventario de Equipos',
-    total: 3,
-    descripcion: 'Registro y seguimiento de equipos de cómputo.',
-    ruta: '/home.html',
+    nombre: 'Donaciones y Donadores',
+    titulo: 'Donaciones y Donadores',
+    total: 0,
+    descripcion: 'Registro y seguimiento de donaciones y donadores.',
+    ruta: '/donaciones.html',
     estado: 'Activo'
   },
   {
