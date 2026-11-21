@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const equiposLista = await obtenerEquipos();
 
     const modulos = modulosOriginales.map((mod) => {
-      if (mod.id === 3 || mod.nombre === 'Inventario de Equipos' || mod.titulo === 'Inventario de Equipos') {
+      if (mod.id === 2 || mod.nombre === 'Inventario de Equipos' || mod.titulo === 'Inventario de Equipos') {
         return {
           ...mod,
           ruta: '/equipos.html', 
