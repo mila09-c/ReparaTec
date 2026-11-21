@@ -3,40 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formulario de Usuario - REPARATEC</title>
+    <title>FORMULARIO DE USUARIOS — REPARATEC</title>
     <link rel="stylesheet" href="/src/css/home.css" />
     <link rel="stylesheet" href="/src/css/usuarios.css" />
   </head>
   <body>
-    <div id ="header-container"></div>
+    <div id="header-container"></div>
 
     <main class="container">
       <form id="form-usuario" class="card" novalidate>
-        <h2 id="form-titulo">Agregar Usuario</h2>
+        <h2 id="form-titulo" style="margin-bottom: 1.25rem; color: var(--color-acento-oscuro);">Agregar Usuario</h2>
 
         <div class="form-group">
-          <label for="nombre">Nombre Completo *</label>
-          <input type="text" id="nombre" required />
+          <label for="Nombre_Usuario">Nombre(s) *</label>
+          <input type="text" id="Nombre_Usuario" placeholder="Ej. Carlos" required />
         </div>
 
         <div class="form-group">
-          <label for="correo">Correo Electrónico *</label>
-          <input type="email" id="correo" required />
+          <label for="Apellido">Apellidos *</label>
+          <input type="text" id="Apellido" placeholder="Ej. Mendoza Ruiz" required />
         </div>
 
         <div class="form-group">
-          <label for="rol">Rol *</label>
-          <select id="rol" required>
-            <option value="">Selecciona un rol...</option>
-            <option value="Administrador">Administrador</option>
-            <option value="Técnico">Técnico</option>
-            <option value="Estudiante">Estudiante</option>
-          </select>
+          <label for="Correo">Correo Electrónico *</label>
+          <input type="email" id="Correo" placeholder="usuario@reparatec.org" required />
         </div>
 
         <div class="form-group">
-          <label for="estado">Estado *</label>
-          <select id="estado" required>
+          <label for="Telefono">Teléfono *</label>
+          <input type="tel" id="Telefono" placeholder="2221001001" required />
+        </div>
+
+        <div class="form-group">
+          <label for="ID_Rol">Rol *</label>
+          <select id="ID_Rol" required></select>
+          <option value="Activo">BENEFICIARIO</option>
+          <option value="Inactivo">DONADOR</option>
+          <option value="Inactivo">TECNICO</option>
+        </div>
+
+        <div class="form-group">
+          <label for="Estado">Estado *</label>
+          <select id="Estado" required>
             <option value="Activo">Activo</option>
             <option value="Inactivo">Inactivo</option>
           </select>
@@ -49,10 +57,9 @@
       </form>
     </main>
 
-       <div id="footer-container"></div>
+    <div id="footer-container"></div>
 
-    <script type="module" src="./src/js/main.js"></script>
-    <script type="module" src="./src/js/usuarios.js"></script>
     <script type="module" src="/src/js/proteccion.js"></script>
+    <script type="module" src="/src/js/usuarios.js"></script>
   </body>
 </html>
