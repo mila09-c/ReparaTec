@@ -41,14 +41,14 @@ function inicializarHeader(mostrarNav) {
   }
 
   if (sessionBox) {
-    const correoActivo = sessionStorage.getItem('usuario_correo');
-    if (correoActivo) {
+    const sesion = JSON.parse(localStorage.getItem('sesion') || 'null');
+    if (sesion?.usuario) {
       sessionBox.innerHTML = `
-        <span>${correoActivo}</span>
-        <button type="button" class="btn-logout" id="btn-cerrar-sesion">Salir</button>
+        <span>${sesion.usuario.name}</span>
+        <button type="button" class="btn-logout" id="cerrar-sesion">Cerrar sesión</button>
       `;
-      document.getElementById('btn-cerrar-sesion').addEventListener('click', () => {
-        sessionStorage.removeItem('usuario_correo');
+      document.getElementById('cerrar-sesion').addEventListener('click', () => {
+        localStorage.removeItem('sesion');
         window.location.href = '/login.html';
       });
     } else {
