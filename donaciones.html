@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DONACIONES Y DONADORES — ReparaTec</title>
+  <link rel="stylesheet" href="/src/css/home.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+      <div>
+        <h1 class="section-title" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Recepción de Donaciones</h1>
+        <p style="color: var(--color-texto-suave); font-size: 0.9rem;">DONACIONES Y DONADORES.</p>
+      </div>
+      <a href="/formulario-equipo.html" class="btn-positivo">+ Registrar Equipo</a>
+    </div>
+
+    <section style="margin-bottom: 2.5rem;">
+      <h2 class="section-title">REGISTRO DE DONACIONES</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Fecha Donación</th>
+              <th>Donador</th>
+              <th>Tipo de Entrega</th>
+              <th>Observaciones</th>
+              <th>Estado</th>
+              <th>Inventario</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-donaciones-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">DIRECTORIO DE DONADORES</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tipo de Donador</th>
+              <th>Dirección</th>
+              <th>Estatus</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-donadores-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="/src/js/donaciones.js"></script>
+</body>
+</html>

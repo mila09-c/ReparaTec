@@ -5,11 +5,16 @@
   --color-positivo-hover: #047857;
   --color-primario: #2563EB;
   --color-primario-hover: #1D4ED8;
-  --color-texto: #1F2937;
-  --color-texto-suave: #4B5563;
-  --color-fondo: #F9FAFB;
+  --color-acento-oscuro: #1E1B4B;
+  --color-acento-oscuro-hover: #312E81;
+  --color-acento-calido: #D97706;
+  --color-acento-calido-hover: #B45309;
+  --color-texto: #1E293B;
+  --color-texto-suave: #475569;
+  --color-fondo: #E6ECF5;
+  --color-superficie-suave: #DBEAFE;
   --color-blanco: #FFFFFF;
-  --color-borde: #E5E7EB;
+  --color-borde: #CBD5E1;
   --color-error: #DC2626;
 }
 
@@ -44,7 +49,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-primario-hover);
+  color: var(--color-acento-calido-hover);
 }
 
 .btn-positivo {
@@ -57,7 +62,7 @@ a:hover {
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.15s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -66,4 +71,21 @@ a:hover {
 
 .btn-positivo:hover {
   background-color: var(--color-positivo-hover);
+  transform: translateY(-1px);
+}
+
+.btn-accion-tabla {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.375rem;
+  background-color: var(--color-acento-oscuro);
+  color: var(--color-blanco);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-accion-tabla:hover {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
 }
