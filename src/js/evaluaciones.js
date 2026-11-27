@@ -23,6 +23,15 @@ function resolverNombreBeneficiario(beneficiarios, idBen, nombreDirecto = '') {
   return ben ? `${ben.Institucion} (${ben.Tipo_beneficiario})` : `Beneficiario #${idBen}`;
 }
 
+function poblarSelectBeneficiarios(selectEl, beneficiarios) {
+  beneficiarios.forEach((b) => {
+    const option = document.createElement('option');
+    option.value = b.ID_Beneficiario ?? b.id;
+    option.textContent = `${b.Institucion} (${b.Tipo_beneficiario})`;
+    selectEl.appendChild(option);
+  });
+}
+
 function limpiarErrores(ids) {
   ids.forEach((id) => {
     const el = document.getElementById(`error-${id}`);
@@ -30,9 +39,16 @@ function limpiarErrores(ids) {
   });
 }
 
-function marcarError(id, mensaje) {
-  const el = document.getElementById(`error-${id}`);
-  if (el) el.textContent = mensaje;
+function validarRequeridos(reglas) {
+  let valido = true;
+  reglas.forEach(([id, valor, mensaje]) => {
+    if (!valor) {
+      const el = document.getElementById(`error-${id}`);
+      if (el) el.textContent = mensaje;
+      valido = false;
+    }
+  });
+  return valido;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -51,12 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let beneficiarios = [];
   try {
     beneficiarios = await obtenerBeneficiariosApi();
-    beneficiarios.forEach((b) => {
-      const option = document.createElement('option');
-      option.value = b.ID_Beneficiario ?? b.id;
-      option.textContent = `${b.Institucion} (${b.Tipo_beneficiario})`;
-      benSelect.appendChild(option);
-    });
+    poblarSelectBeneficiarios(benSelect, beneficiarios);
   } catch (error) {
     pintarMensaje(mensajeEl, error.message || 'Error al cargar beneficiarios.', true);
   }
@@ -103,8 +114,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const camposRequeridos = ['ID_Beneficiario', 'Fecha_evaluacion', 'Calificacion', 'Estado_funcionamiento'];
-    limpiarErrores(camposRequeridos);
+    const campos = ['ID_Beneficiario', 'Fecha_evaluacion', 'Calificacion', 'Estado_funcionamiento'];
+    limpiarErrores(campos);
 
     const idBen = benSelect.value;
     const fecha = fechaInput.value.trim();
@@ -112,23 +123,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const estadoFunc = document.getElementById('Estado_funcionamiento').value;
     const obs = document.getElementById('Observaciones').value.trim();
 
-    let valido = true;
-    if (!idBen) {
-      marcarError('ID_Beneficiario', 'Seleccione un beneficiario.');
-      valido = false;
-    }
-    if (!fecha) {
-      marcarError('Fecha_evaluacion', 'Indique la fecha.');
-      valido = false;
-    }
-    if (!calif) {
-      marcarError('Calificacion', 'Seleccione una calificación.');
-      valido = false;
-    }
-    if (!estadoFunc) {
-      marcarError('Estado_funcionamiento', 'Seleccione el estado de funcionamiento.');
-      valido = false;
-    }
+    const valido = validarRequeridos([
+      ['ID_Beneficiario', idBen, 'Seleccione un beneficiario.'],
+      ['Fecha_evaluacion', fecha, 'Indique la fecha.'],
+      ['Calificacion', calif, 'Seleccione una calificación.'],
+      ['Estado_funcionamiento', estadoFunc, 'Seleccione el estado de funcionamiento.'],
+    ]);
     if (!valido) return;
 
     try {
