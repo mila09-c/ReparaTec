@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Componentes de Equipo — ReparaTec</title>
+  <link rel="stylesheet" href="/src/css/home.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+      <div>
+        <h1 class="section-title" style="margin-bottom: 0.25rem;">COMPONENTES Y REFACCIONES</h1>
+        <p style="margin: 0; opacity: 0.8;">Inventario de refacciones y consumo por reparación.</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="/diagnosticos.html" class="module-link">Ver Diagnósticos &rarr;</a>
+        <a href="/reparaciones.html" class="module-link">Ver Reparaciones &rarr;</a>
+      </div>
+    </div>
+
+    <section style="background: var(--color-blanco); border: 1px solid var(--color-borde); border-top: 5px solid var(--color-acento-oscuro); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 6px 16px rgba(30, 27, 75, 0.08);">
+      <h2 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.15rem;">Registrar Nuevo Componente</h2>
+      <form id="form-componente" novalidate style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem;">
+        <div class="form-group">
+          <label for="Nombre_componente">Nombre del Componente *</label>
+          <input type="text" id="Nombre_componente" placeholder="Ej. Memoria RAM 8GB DDR4" required />
+          <span class="error-msg" id="error-Nombre_componente"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Marca">Marca *</label>
+          <input type="text" id="Marca" placeholder="Ej. Kingston, Crucial" required />
+          <span class="error-msg" id="error-Marca"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Modelo">Modelo *</label>
+          <input type="text" id="Modelo" placeholder="Ej. KVR26S19S8/8" required />
+          <span class="error-msg" id="error-Modelo"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Numero_de_serie">Número de Serie *</label>
+          <input type="text" id="Numero_de_serie" placeholder="Ej. CMP-RAM-001" required />
+          <span class="error-msg" id="error-Numero_de_serie"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Precio">Precio Unitario ($) *</label>
+          <input type="number" step="0.01" min="0" id="Precio" placeholder="0.00" required />
+          <span class="error-msg" id="error-Precio"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Existencia">Existencia *</label>
+          <input type="number" min="0" id="Existencia" placeholder="0" required />
+          <span class="error-msg" id="error-Existencia"></span>
+        </div>
+
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label for="Descripcion">Descripción</label>
+          <input type="text" id="Descripcion" placeholder="Compatibilidad o especificaciones técnicas" />
+        </div>
+
+        <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end;">
+          <button type="submit" class="btn-positivo">Guardar</button>
+        </div>
+      </form>
+    </section>
+
+    <section style="margin-bottom: 2.5rem;">
+      <h2 class="section-title">CATÁLOGO DE COMPONENTES</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Componente</th>
+              <th>Marca / Modelo</th>
+              <th>No. Serie</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Existencia</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-componentes-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">DETALLES DE COMPONENTES (USO EN REPARACIONES)</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID Detalle</th>
+              <th>Reparación / Equipo</th>
+              <th>Componente</th>
+              <th>Cantidad Utilizada</th>
+              <th>Costo Unitario</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-detalles-componentes-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="/src/js/componentes.js"></script>
+  <script type="module" src="/src/js/proteccion.js"></script>
+</body>
+</html>

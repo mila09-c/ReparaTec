@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnosticos — ReparaTec</title>
+  <link rel="stylesheet" href="/src/css/home.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+      <div>
+        <h1 class="section-title" style="margin-bottom: 0.25rem;">DIAGNÓSTICOS TÉCNICOS</h1>
+        <p style="margin: 0; opacity: 0.8;">Evaluación inicial de fallas y refacciones requeridas por equipo</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="/reparaciones.html" class="module-link">Ver Reparaciones &rarr;</a>
+        <a href="/componentes.html" class="module-link">Ver Componentes &rarr;</a>
+      </div>
+    </div>
+
+    <section style="background: var(--color-blanco); border: 1px solid var(--color-borde); border-top: 5px solid var(--color-acento-oscuro); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 6px 16px rgba(30, 27, 75, 0.08);">
+      <h2 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.15rem;">Nuevo Diagnóstico</h2>
+      <form id="form-diagnostico" novalidate style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+        <div class="form-group">
+          <label for="ID_Equipo">Equipo *</label>
+          <select id="ID_Equipo" required>
+            <option value="">Seleccione un equipo...</option>
+          </select>
+          <span class="error-msg" id="error-ID_Equipo"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Fecha_diagnostico">Fecha de Diagnóstico *</label>
+          <input type="date" id="Fecha_diagnostico" required />
+          <span class="error-msg" id="error-Fecha_diagnostico"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Estado_base">Estado Base *</label>
+          <select id="Estado_base" required>
+            <option value="">Seleccione estado base...</option>
+            <option value="Bueno">Bueno</option>
+            <option value="Regular">Regular</option>
+            <option value="Deficiente">Deficiente</option>
+            <option value="Critico">Crítico</option>
+          </select>
+          <span class="error-msg" id="error-Estado_base"></span>
+        </div>
+
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label for="Problema_detectado">Problema Detectado *</label>
+          <input type="text" id="Problema_detectado" placeholder="Ej. Falla de encendido, pantalla sin retroiluminación..." required />
+          <span class="error-msg" id="error-Problema_detectado"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Refaccion_requerida">Refacción Requerida</label>
+          <input type="text" id="Refaccion_requerida" placeholder="Ej. Batería, SSD, cargador" />
+        </div>
+
+        <div class="form-group">
+          <label for="Observaciones">Observaciones</label>
+          <input type="text" id="Observaciones" placeholder="Notas adicionales del técnico" />
+        </div>
+
+        <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end;">
+          <button type="submit" class="btn-positivo">Registrar Diagnóstico</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <h2 class="section-title">LISTADO DE DIAGNÓSTICOS</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Equipo</th>
+              <th>Fecha</th>
+              <th>Problema Detectado</th>
+              <th>Estado Base</th>
+              <th>Refacción Requerida</th>
+              <th>Observaciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-diagnosticos-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="/src/js/diagnosticos.js"></script>
+  <script type="module" src="/src/js/proteccion.js"></script>
+</body>
+</html>

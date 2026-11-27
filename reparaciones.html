@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reparaciones — ReparaTec</title>
+  <link rel="stylesheet" href="/src/css/home.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+      <div>
+        <h1 class="section-title" style="margin-bottom: 0.25rem;">TALLER DE REPARACIONES</h1>
+        <p style="margin: 0; opacity: 0.8;">Seguimiento de órdenes de reparación, técnicos asignados y costos</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="/diagnosticos.html" class="module-link">Ver Diagnósticos &rarr;</a>
+        <a href="/componentes.html" class="module-link">Ver Componentes &rarr;</a>
+      </div>
+    </div>
+
+    <section style="background: var(--color-blanco); border: 1px solid var(--color-borde); border-top: 5px solid var(--color-acento-oscuro); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 6px 16px rgba(30, 27, 75, 0.08);">
+      <h2 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.15rem;">Registrar Orden de Reparación</h2>
+      <form id="form-reparacion" novalidate style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem;">
+        <div class="form-group">
+          <label for="ID_Diagnostico">Diagnóstico *</label>
+          <select id="ID_Diagnostico" required>
+            <option value="">Seleccione un diagnóstico...</option>
+          </select>
+          <span class="error-msg" id="error-ID_Diagnostico"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="ID_Tecnico">Técnico Asignado *</label>
+          <select id="ID_Tecnico" required>
+            <option value="">Seleccione un técnico...</option>
+          </select>
+          <span class="error-msg" id="error-ID_Tecnico"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Fecha_inicio">Fecha de Inicio *</label>
+          <input type="date" id="Fecha_inicio" required />
+          <span class="error-msg" id="error-Fecha_inicio"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Fecha_termino">Fecha de Término</label>
+          <input type="date" id="Fecha_termino" />
+        </div>
+
+        <div class="form-group">
+          <label for="Costo_estimado">Costo Estimado ($) *</label>
+          <input type="number" step="0.01" min="0" id="Costo_estimado" placeholder="0.00" required />
+          <span class="error-msg" id="error-Costo_estimado"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Costo_final">Costo Final ($)</label>
+          <input type="number" step="0.01" min="0" id="Costo_final" placeholder="0.00" />
+        </div>
+
+        <div class="form-group">
+          <label for="Estado_reparacion">Estado de Reparación *</label>
+          <select id="Estado_reparacion" required>
+            <option value="">Seleccione estado...</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="En proceso">En proceso</option>
+            <option value="Completada">Completada</option>
+            <option value="Cancelada">Cancelada</option>
+          </select>
+          <span class="error-msg" id="error-Estado_reparacion"></span>
+        </div>
+
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label for="Descripcion_trabajo">Descripción del Trabajo *</label>
+          <input type="text" id="Descripcion_trabajo" placeholder="Detalle del mantenimiento o reparación realizada" required />
+          <span class="error-msg" id="error-Descripcion_trabajo"></span>
+        </div>
+
+        <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end;">
+          <button type="submit" class="btn-positivo">Guardar</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <h2 class="section-title">ÓRDENES DE REPARACIÓN</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Equipo</th>
+              <th>Diagnóstico / Trabajo</th>
+              <th>Técnico</th>
+              <th>Fechas</th>
+              <th>Costo Est. / Final</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-reparaciones-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="/src/js/reparaciones.js"></script>
+  <script type="module" src="/src/js/proteccion.js"></script>
+</body>
+</html>
