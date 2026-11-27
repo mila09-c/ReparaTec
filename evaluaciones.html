@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evaluacion — ReparaTec</title>
+  <link rel="stylesheet" href="/src/css/home.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+      <div>
+        <h1 class="section-title" style="margin-bottom: 0.25rem;">EVALUACIONES DE BENEFICIARIOS</h1>
+        <p style="margin: 0; opacity: 0.8;">Seguimiento de funcionamiento y retroalimentación</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="/beneficiarios.html" class="module-link">Beneficiarios &rarr;</a>
+        <a href="/asignaciones.html" class="module-link">Asignaciones &rarr;</a>
+      </div>
+    </div>
+
+    <div id="mensaje-estado" style="margin-bottom: 1rem;"></div>
+
+    <section style="background: var(--color-blanco); border: 1px solid var(--color-borde); border-top: 5px solid var(--color-acento-oscuro); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 6px 16px rgba(30, 27, 75, 0.08);">
+      <h2 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.15rem;">Registrar Evaluación</h2>
+      <form id="form-evaluacion" novalidate style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem;">
+        <div class="form-group">
+          <label for="ID_Beneficiario">Beneficiario *</label>
+          <select id="ID_Beneficiario" required>
+            <option value="">Seleccione el beneficiario...</option>
+          </select>
+          <span class="error-msg" id="error-ID_Beneficiario"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Fecha_evaluacion">Fecha de Evaluación *</label>
+          <input type="date" id="Fecha_evaluacion" required />
+          <span class="error-msg" id="error-Fecha_evaluacion"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Calificacion">Calificación (1 - 5) *</label>
+          <select id="Calificacion" required>
+            <option value="">Seleccione...</option>
+            <option value="5">5 — Excelente</option>
+            <option value="4">4 — Bueno</option>
+            <option value="3">3 — Regular</option>
+            <option value="2">2 — Deficiente</option>
+            <option value="1">1 — Malo</option>
+          </select>
+          <span class="error-msg" id="error-Calificacion"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Estado_funcionamiento">Estado de Funcionamiento *</label>
+          <select id="Estado_funcionamiento" required>
+            <option value="">Seleccione estado...</option>
+            <option value="Optimo">Óptimo</option>
+            <option value="Bueno">Bueno</option>
+            <option value="Regular">Regular</option>
+            <option value="Con fallas">Con fallas</option>
+          </select>
+          <span class="error-msg" id="error-Estado_funcionamiento"></span>
+        </div>
+
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label for="Observaciones">Observaciones</label>
+          <input type="text" id="Observaciones" placeholder="Comentarios sobre el desempeño o uso del equipo" />
+        </div>
+
+        <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end;">
+          <button type="submit" class="btn-positivo">Guardar Evaluación</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <h2 class="section-title">LISTADO DE EVALUACIONES</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Beneficiario</th>
+              <th>Fecha</th>
+              <th>Calificación</th>
+              <th>Estado Funcionamiento</th>
+              <th>Observaciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-evaluaciones-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="/src/js/evaluaciones.js"></script>
+  <script type="module" src="/src/js/proteccion.js"></script>
+</body>
+</html>
