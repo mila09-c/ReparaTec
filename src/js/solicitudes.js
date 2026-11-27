@@ -5,6 +5,36 @@ import {
   crearSolicitudApi,
 } from './asignaciones-api.js';
 
+function hoyIso() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function pintarMensaje(contenedor, texto, esError = false) {
+  if (!contenedor) return;
+  const borde = esError ? '#dc2626' : '#16a34a';
+  const color = esError ? '#991b1b' : '#166534';
+  const fondo = esError ? '#fef2f2' : '#f0fdf4';
+  contenedor.innerHTML = `<div style="padding: 0.75rem 1rem; border-radius: 0.5rem; border: 1px solid ${borde}; color: ${color}; background: ${fondo};">${texto}</div>`;
+}
+
+function resolverNombreBeneficiario(beneficiarios, idBen, nombreDirecto = '') {
+  if (nombreDirecto) return nombreDirecto;
+  const ben = beneficiarios.find((b) => Number(b.ID_Beneficiario ?? b.id) === Number(idBen));
+  return ben ? `${ben.Institucion} (${ben.Tipo_beneficiario})` : `Beneficiario #${idBen}`;
+}
+
+function limpiarErrores(ids) {
+  ids.forEach((id) => {
+    const el = document.getElementById(`error-${id}`);
+    if (el) el.textContent = '';
+  });
+}
+
+function marcarError(id, mensaje) {
+  const el = document.getElementById(`error-${id}`);
+  if (el) el.textContent = mensaje;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarParciales({ mostrarNav: true });
 
@@ -15,26 +45,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   const mensajeEl = document.getElementById('mensaje-estado');
 
   if (fechaInput && !fechaInput.value) {
-    fechaInput.value = new Date().toISOString().split('T')[0];
+    fechaInput.value = hoyIso();
   }
-
-  const mostrarMensaje = (texto, esError = false) => {
-    if (!mensajeEl) return;
-    mensajeEl.innerHTML = `<div style="padding: 0.75rem 1rem; border-radius: 0.5rem; border: 1px solid ${esError ? '#dc2626' : '#16a34a'}; color: ${esError ? '#991b1b' : '#166534'}; background: ${esError ? '#fef2f2' : '#f0fdf4'};">${texto}</div>`;
-  };
 
   let beneficiarios = [];
   try {
     beneficiarios = await obtenerBeneficiariosApi();
     beneficiarios.forEach((b) => {
-      const idBen = b.ID_Beneficiario ?? b.id;
       const option = document.createElement('option');
-      option.value = idBen;
+      option.value = b.ID_Beneficiario ?? b.id;
       option.textContent = `${b.Institucion} (${b.Tipo_beneficiario})`;
       benSelect.appendChild(option);
     });
   } catch (error) {
-    mostrarMensaje(error.message || 'Error al cargar beneficiarios.', true);
+    pintarMensaje(mensajeEl, error.message || 'Error al cargar beneficiarios.', true);
   }
 
   const renderTabla = async () => {
@@ -53,13 +77,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       tbody.innerHTML = lista
         .map((s) => {
-          const ben = beneficiarios.find(
-            (b) => Number(b.ID_Beneficiario ?? b.id) === Number(s.ID_Beneficiario)
+          const benNombre = resolverNombreBeneficiario(
+            beneficiarios,
+            s.ID_Beneficiario,
+            s.Beneficiario_Nombre
           );
-          const benNombre =
-            s.Beneficiario_Nombre ||
-            (ben ? `${ben.Institucion} (${ben.Tipo_beneficiario})` : `Beneficiario #${s.ID_Beneficiario}`);
-
           return `
             <tr>
               <td>#${s.ID_Solicitud ?? s.id ?? ''}</td>
@@ -74,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         })
         .join('');
     } catch (error) {
-      mostrarMensaje(error.message || 'Error al cargar solicitudes.', true);
+      pintarMensaje(mensajeEl, error.message || 'Error al cargar solicitudes.', true);
     }
   };
 
@@ -82,11 +104,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    ['ID_Beneficiario', 'Fecha_solicitud', 'Prioridad', 'Estado', 'Motivo', 'Uso_destinado'].forEach((id) => {
-      const el = document.getElementById(`error-${id}`);
-      if (el) el.textContent = '';
-    });
+    const camposRequeridos = ['ID_Beneficiario', 'Fecha_solicitud', 'Prioridad', 'Estado', 'Motivo', 'Uso_destinado'];
+    limpiarErrores(camposRequeridos);
 
     const idBen = benSelect.value;
     const fecha = fechaInput.value.trim();
@@ -98,30 +117,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let valido = true;
     if (!idBen) {
-      document.getElementById('error-ID_Beneficiario').textContent = 'Seleccione un beneficiario.';
+      marcarError('ID_Beneficiario', 'Seleccione un beneficiario.');
       valido = false;
     }
     if (!fecha) {
-      document.getElementById('error-Fecha_solicitud').textContent = 'Indique la fecha.';
+      marcarError('Fecha_solicitud', 'Indique la fecha.');
       valido = false;
     }
     if (!prioridad) {
-      document.getElementById('error-Prioridad').textContent = 'Seleccione la prioridad.';
+      marcarError('Prioridad', 'Seleccione la prioridad.');
       valido = false;
     }
     if (!estado) {
-      document.getElementById('error-Estado').textContent = 'Seleccione el estado.';
+      marcarError('Estado', 'Seleccione el estado.');
       valido = false;
     }
     if (!motivo) {
-      document.getElementById('error-Motivo').textContent = 'Ingrese el motivo.';
+      marcarError('Motivo', 'Ingrese el motivo.');
       valido = false;
     }
     if (!uso) {
-      document.getElementById('error-Uso_destinado').textContent = 'Ingrese el uso destinado.';
+      marcarError('Uso_destinado', 'Ingrese el uso destinado.');
       valido = false;
     }
-
     if (!valido) return;
 
     try {
@@ -136,10 +154,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
       await renderTabla();
       form.reset();
-      fechaInput.value = new Date().toISOString().split('T')[0];
-      mostrarMensaje('Solicitud registrada correctamente.');
+      fechaInput.value = hoyIso();
+      pintarMensaje(mensajeEl, 'Solicitud registrada correctamente.');
     } catch (error) {
-      mostrarMensaje(error.message || 'No se pudo registrar la solicitud.', true);
+      pintarMensaje(mensajeEl, error.message || 'No se pudo registrar la solicitud.', true);
     }
   });
 });
