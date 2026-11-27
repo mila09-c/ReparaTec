@@ -98,9 +98,15 @@ function extraerLista(respuesta, clavesPosibles = []) {
 
 function esErrorDeEndpointNoDisponible(error) {
   const msg = String(error?.message || '').toLowerCase();
-  return ['no se pudo conectar', 'failed to fetch', '404', 'not found', 'cannot '].some((p) =>
-    msg.includes(p)
-  );
+  return [
+    'no se pudo conectar',
+    'failed to fetch',
+    '404',
+    'not found',
+    'cannot get',
+    'cannot post',
+    'cannot put',
+  ].some((p) => msg.includes(p));
 }
 
 async function consultarConFallback(llamadaApi, accionLocal) {
@@ -113,30 +119,52 @@ async function consultarConFallback(llamadaApi, accionLocal) {
   }
 }
 
-async function sincronizarEntregaApi(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre) {
+function agregarLocal(lista, campoId, datos) {
+  const registro = { [campoId]: lista.length + 1, ...datos };
+  lista.unshift(registro);
+  return registro;
+}
+
+function armarMovimientoEntrega(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre, estadoPrevio) {
+  const fechaMov = `${datos.Fecha_entrega || new Date().toISOString().split('T')[0]} 12:00:00`;
+  const ubicacionAnterior =
+    estadoPrevio === 'Asignado'
+      ? 'Almacén ReparaTec'
+      : `Almacén (${estadoPrevio || 'Listo para asignar'})`;
+  const ubicacionNueva = beneficiarioNombre
+    ? `${beneficiarioNombre} — Asignado`
+    : 'Asignado a Beneficiario';
+
+  return {
+    Fecha_movimiento: fechaMov,
+    Tipo_movimiento: 'Entrega',
+    Descripcion: `Entrega vinculada a asignación${idAsignacion ? ` #${idAsignacion}` : ''} (${datos.Condiciones_entrega})`,
+    Ubicacion_anterior: ubicacionAnterior,
+    Ubicacion_nueva: ubicacionNueva,
+    ID_Asignacion: idAsignacion ? Number(idAsignacion) : null,
+    ID_Equipo: Number(datos.ID_Equipo),
+  };
+}
+
+async function sincronizarEntregaBackend(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre) {
   try {
     await actualizarEstadoEquipoApi(datos.ID_Equipo, 'Asignado', equipoSeleccionado || {});
   } catch {
-    // Si el backend ya actualiza el estado automáticamente, no bloqueamos
+    // Si el backend ya actualiza el estado, continuamos
   }
-
-  const fechaMov = `${datos.Fecha_entrega || new Date().toISOString().split('T')[0]} 12:00:00`;
-  const estadoPrevio = equipoSeleccionado?.Estado_equipo;
-  const ubicacionAnterior = estadoPrevio ? `Almacén (${estadoPrevio})` : 'Almacén ReparaTec';
-  const ubicacionNueva = beneficiarioNombre ? `${beneficiarioNombre} — Asignado` : 'Asignado a Beneficiario';
-
   try {
-    await api.post('/api/historial-equipos', {
-      ID_Equipo: Number(datos.ID_Equipo),
-      ID_Asignacion: idAsignacion ? Number(idAsignacion) : null,
-      Fecha_movimiento: fechaMov,
-      Tipo_movimiento: 'Entrega',
-      Descripcion: `Entrega vinculada a asignación${idAsignacion ? ` #${idAsignacion}` : ''} (${datos.Condiciones_entrega})`,
-      Ubicacion_anterior: ubicacionAnterior,
-      Ubicacion_nueva: ubicacionNueva,
-    });
+    await api.post(
+      '/api/historial-equipos',
+      armarMovimientoEntrega(
+        datos,
+        idAsignacion,
+        equipoSeleccionado,
+        beneficiarioNombre,
+        equipoSeleccionado?.Estado_equipo
+      )
+    );
   } catch {
-    // Si el backend ya crea el historial automáticamente, no bloqueamos
+    // Si el backend ya registra el historial, continuamos
   }
 }
 
@@ -147,17 +175,11 @@ function aplicarEntregaLocal(datos, idAsignacion, equipoSeleccionado, beneficiar
   const estadoPrevio = eq?.Estado_equipo || equipoSeleccionado?.Estado_equipo || 'Listo para asignar';
   if (eq) eq.Estado_equipo = 'Asignado';
 
-  const fechaMov = `${datos.Fecha_entrega || new Date().toISOString().split('T')[0]} 12:00:00`;
-  localStore.historial.unshift({
-    ID_Historial: localStore.historial.length + 1,
-    Fecha_movimiento: fechaMov,
-    Tipo_movimiento: 'Entrega',
-    Descripcion: `Entrega vinculada a asignación${idAsignacion ? ` #${idAsignacion}` : ''} (${datos.Condiciones_entrega})`,
-    Ubicacion_anterior: estadoPrevio === 'Asignado' ? 'Almacén ReparaTec' : `Almacén (${estadoPrevio})`,
-    Ubicacion_nueva: beneficiarioNombre ? `${beneficiarioNombre} — Asignado` : 'Asignado a Beneficiario',
-    ID_Asignacion: idAsignacion ? Number(idAsignacion) : null,
-    ID_Equipo: Number(datos.ID_Equipo),
-  });
+  agregarLocal(
+    localStore.historial,
+    'ID_Historial',
+    armarMovimientoEntrega(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre, estadoPrevio)
+  );
 }
 
 export async function obtenerBeneficiariosApi() {
@@ -170,11 +192,7 @@ export async function obtenerBeneficiariosApi() {
 export async function crearBeneficiarioApi(datos) {
   return await consultarConFallback(
     () => api.post('/api/beneficiarios', datos),
-    () => {
-      const nuevo = { ID_Beneficiario: localStore.beneficiarios.length + 1, ...datos };
-      localStore.beneficiarios.unshift(nuevo);
-      return nuevo;
-    }
+    () => agregarLocal(localStore.beneficiarios, 'ID_Beneficiario', datos)
   );
 }
 
@@ -188,11 +206,7 @@ export async function obtenerSolicitudesApi() {
 export async function crearSolicitudApi(datos) {
   return await consultarConFallback(
     () => api.post('/api/solicitudes', datos),
-    () => {
-      const nueva = { ID_Solicitud: localStore.solicitudes.length + 1, ...datos };
-      localStore.solicitudes.unshift(nueva);
-      return nueva;
-    }
+    () => agregarLocal(localStore.solicitudes, 'ID_Solicitud', datos)
   );
 }
 
@@ -207,9 +221,14 @@ export async function actualizarEstadoEquipoApi(idEquipo, nuevoEstado, equipoAct
   return await consultarConFallback(
     async () => {
       try {
-        return await api.put(`/api/equipos/${idEquipo}`, { ...equipoActual, Estado_equipo: nuevoEstado });
+        return await api.put(`/api/equipos/${idEquipo}`, {
+          ...equipoActual,
+          Estado_equipo: nuevoEstado,
+        });
       } catch {
-        return await api.put(`/api/equipos/${idEquipo}/estado`, { Estado_equipo: nuevoEstado });
+        return await api.put(`/api/equipos/${idEquipo}/estado`, {
+          Estado_equipo: nuevoEstado,
+        });
       }
     },
     () => {
@@ -236,15 +255,17 @@ export async function crearAsignacionApi(datos, equipoSeleccionado = null, benef
     const asignacionCreada = await api.post('/api/asignaciones', datos);
     if (esEntrega) {
       const idAsignacion =
-        asignacionCreada?.ID_Asignacion ?? asignacionCreada?.id ?? asignacionCreada?.data?.ID_Asignacion ?? null;
-      await sincronizarEntregaApi(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre);
+        asignacionCreada?.ID_Asignacion ??
+        asignacionCreada?.id ??
+        asignacionCreada?.data?.ID_Asignacion ??
+        null;
+      await sincronizarEntregaBackend(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre);
     }
     return asignacionCreada;
   } catch (error) {
     if (!USAR_FALLBACK_LOCAL || !esErrorDeEndpointNoDisponible(error)) throw error;
 
-    const nuevaAsignacion = { ID_Asignacion: localStore.asignaciones.length + 1, ...datos };
-    localStore.asignaciones.unshift(nuevaAsignacion);
+    const nuevaAsignacion = agregarLocal(localStore.asignaciones, 'ID_Asignacion', datos);
     if (esEntrega) {
       aplicarEntregaLocal(datos, nuevaAsignacion.ID_Asignacion, equipoSeleccionado, beneficiarioNombre);
     }
@@ -262,11 +283,7 @@ export async function obtenerEvaluacionesApi() {
 export async function crearEvaluacionApi(datos) {
   return await consultarConFallback(
     () => api.post('/api/evaluaciones', datos),
-    () => {
-      const nueva = { ID_Evaluacion: localStore.evaluaciones.length + 1, ...datos };
-      localStore.evaluaciones.unshift(nueva);
-      return nueva;
-    }
+    () => agregarLocal(localStore.evaluaciones, 'ID_Evaluacion', datos)
   );
 }
 
