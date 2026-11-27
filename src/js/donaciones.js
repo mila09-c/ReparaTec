@@ -1,51 +1,71 @@
 import { cargarParciales } from './main.js';
-import { DONACIONES } from './datos_equipo.js';
+import { DONACIONES, DONADORES } from './datos_equipo.js';
+import { obtenerUsuario } from './sesion.js';
+import { normalizarRol } from './permisos.js';
 
-export const DONADORES = [
-  { ID_Donador: 1, Tipo_donador: 'Empresa', Direccion: 'Blvd. Hermanos Serdan 450, Puebla, Pue.' },
-  { ID_Donador: 2, Tipo_donador: 'Persona Fisica', Direccion: 'Calle 16 de Septiembre 112, Cholula, Pue.' },
-  { ID_Donador: 3, Tipo_donador: 'Empresa', Direccion: 'Av. Juarez 2840, Col. La Paz, Puebla, Pue.' },
-  { ID_Donador: 4, Tipo_donador: 'Institucion Educativa', Direccion: 'Circuito Universitario 100, Puebla, Pue.' },
-  { ID_Donador: 5, Tipo_donador: 'Persona Fisica', Direccion: 'Privada Las Flores 28, Tlaxcalancingo, Pue.' },
-  { ID_Donador: 6, Tipo_donador: 'Empresa', Direccion: 'Parque Industrial Puebla 2000, Lote 14, Pue.' },
-  { ID_Donador: 7, Tipo_donador: 'Asociacion', Direccion: 'Calle Reforma 75, Centro, Puebla, Pue.' },
-  { ID_Donador: 8, Tipo_donador: 'Persona Fisica', Direccion: 'Av. 31 Poniente 1905, Puebla, Pue.' },
-  { ID_Donador: 9, Tipo_donador: 'Empresa', Direccion: 'Calzada Zavaleta 3100, Puebla, Pue.' },
-  { ID_Donador: 10, Tipo_donador: 'Persona Fisica', Direccion: 'Calle 5 de Mayo 409, Atlixco, Pue.' }
-];
+export { DONADORES };
 
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarParciales({ mostrarNav: true });
 
+  const usuario = obtenerUsuario();
+  const rol = normalizarRol(usuario);
+  
+  const idDonadorUsuario = usuario?.ID_Donador ?? usuario?.id_donador ?? null;
+
+  const donacionesVisibles =
+    rol === 'donador' && idDonadorUsuario
+      ? DONACIONES.filter((d) => Number(d.ID_Donador) === Number(idDonadorUsuario))
+      : DONACIONES;
+
+  const donadoresVisibles =
+    rol === 'donador' && idDonadorUsuario
+      ? DONADORES.filter((don) => Number(don.ID_Donador) === Number(idDonadorUsuario))
+      : DONADORES;
+
   const tbodyDonaciones = document.getElementById('tabla-donaciones-body');
   if (tbodyDonaciones) {
-    tbodyDonaciones.innerHTML = DONACIONES.map((d) => {
-      const donador = DONADORES.find((don) => don.ID_Donador === d.ID_Donador);
-      return `
+    if (!donacionesVisibles.length) {
+      tbodyDonaciones.innerHTML = `
         <tr>
-          <td>#${d.ID_Donacion}</td>
-          <td>${d.Fecha_donacion}</td>
-          <td><strong>#${d.ID_Donador}</strong> — ${donador ? donador.Tipo_donador : 'N/D'}</td>
-          <td>${d.Tipo_entrega}</td>
-          <td>${d.Observaciones}</td>
-          <td><span class="estado-pill">${d.Estado}</span></td>
-          <td><a href="/equipos.html" class="btn-accion-tabla">Ver equipos</a></td>
+          <td colspan="7" style="text-align: center; color: var(--color-texto-suave);">
+            No hay donaciones registradas para mostrar.
+          </td>
         </tr>
       `;
-    }).join('');
+    } else {
+      tbodyDonaciones.innerHTML = donacionesVisibles
+        .map((d) => {
+          const donador = DONADORES.find((don) => don.ID_Donador === d.ID_Donador);
+          return `
+            <tr>
+              <td>#${d.ID_Donacion}</td>
+              <td>${d.Fecha_donacion}</td>
+              <td><strong>#${d.ID_Donador}</strong> — ${donador ? donador.Tipo_donador : 'N/D'}</td>
+              <td>${d.Tipo_entrega}</td>
+              <td>${d.Observaciones}</td>
+              <td><span class="estado-pill">${d.Estado}</span></td>
+              <td><a href="/equipos.html" class="btn-accion-tabla">Ver equipos</a></td>
+            </tr>
+          `;
+        })
+        .join('');
+    }
   }
 
   const tbodyDonadores = document.getElementById('tabla-donadores-body');
   if (tbodyDonadores) {
-    tbodyDonadores.innerHTML = DONADORES.map(
-      (don) => `
-      <tr>
-        <td>#${don.ID_Donador}</td>
-        <td><strong>${don.Tipo_donador}</strong></td>
-        <td>${don.Direccion}</td>
-        <td><span class="estado-pill">Activo</span></td>
-      </tr>
-    `
-    ).join('');
+    tbodyDonadores.innerHTML = donadoresVisibles
+      .map(
+        (don) => `
+        <tr>
+          <td>#${don.ID_Donador}</td>
+          <td><strong>${don.Tipo_donador}</strong></td>
+          <td>${don.Direccion}</td>
+          <td><span class="estado-pill">${don.Estado || 'Activo'}</span></td>
+        </tr>
+      `
+      )
+      .join('');
   }
 });

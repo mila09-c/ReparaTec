@@ -3,44 +3,55 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INVENTARIO DE EQUIPOS — ReparaTec</title>
+  <title>Inventario de Equipos — ReparaTec</title>
   <link rel="stylesheet" href="/src/css/home.css" />
 </head>
 <body>
   <div id="header-container"></div>
 
-  <main>
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
-      <div>
-        <h1 class="section-title" style="font-size: 1.5rem; margin-bottom: 0.25rem;">INVENTARIO DE EQUIPOS</h1>
-        <p style="color: var(--color-texto-suave); font-size: 0.9rem;">Hardware registrado, categoría, especificaciones, perfil y estado.</p>
+  <main class="home-main">
+    <section class="welcome-banner" aria-labelledby="titulo-equipos">
+      <div class="welcome-content">
+        <span class="welcome-badge">INVENTARIO</span>
+        <h1 id="titulo-equipos">INVENTARIO DE EQUIPOS</h1>
+        <p>Hardware registrado, categoría, especificaciones, perfil y estado.</p>
       </div>
-      <a href="/formulario-equipo.html" class="btn-positivo">+ Registrar Equipo</a>
-    </div>
+      <div class="welcome-actions">
+        <a href="/formulario-equipo.html" class="btn-positivo">+ Registrar Equipo</a>
+      </div>
+    </section>
 
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Código / Serie</th>
-            <th>Categoría</th>
-            <th>Marca y Modelo</th>
-            <th>Especificaciones</th>
-            <th>Sistema Operativo</th>
-            <th>Perfil</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-equipos-body"></tbody>
-      </table>
-    </div>
+    <section aria-labelledby="subtitulo-tabla-equipos">
+      <div class="section-header-row">
+        <div>
+          <span class="section-tag">EQUIPOS</span>
+          <h2 class="section-title" id="subtitulo-tabla-equipos">Listado General de Equipos</h2>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Código / Serie</th>
+              <th>Categoría</th>
+              <th>Marca y Modelo</th>
+              <th>Especificaciones</th>
+              <th>Sistema Operativo</th>
+              <th>Perfil</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-equipos-body"></tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
   <div id="footer-container"></div>
 
+  <script type="module" src="/src/js/proteccion.js"></script>
   <script type="module" src="/src/js/equipos-lista.js"></script>
-      <script type="module" src="/src/js/proteccion.js"></script>
-
 </body>
 </html>
