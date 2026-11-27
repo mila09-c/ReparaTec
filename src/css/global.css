@@ -1,21 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
 
 :root {
-  --color-positivo: #059669;
-  --color-positivo-hover: #047857;
-  --color-primario: #2563EB;
-  --color-primario-hover: #1D4ED8;
-  --color-acento-oscuro: #1E1B4B;
-  --color-acento-oscuro-hover: #312E81;
-  --color-acento-calido: #D97706;
-  --color-acento-calido-hover: #B45309;
-  --color-texto: #1E293B;
-  --color-texto-suave: #475569;
-  --color-fondo: #E6ECF5;
-  --color-superficie-suave: #DBEAFE;
+  --color-primario: #0EA5E9;          
+  --color-primario-hover: #0284C7;
+  --color-positivo: #10B981;          
+  --color-positivo-hover: #059669;
+  --color-acento-calido: #F59E0B;     
+  --color-acento-calido-hover: #D97706;
+  --color-acento-oscuro: #0B1120;
+  --color-acento-oscuro-hover: #1E293B;
+  --color-superficie-oscura: #131C31;
+  --color-fondo: #F1F5F9;
+  --color-superficie-suave: #E0F2FE;
   --color-blanco: #FFFFFF;
+  --color-texto: #0F172A;
+  --color-texto-suave: #475569;
   --color-borde: #CBD5E1;
-  --color-error: #DC2626;
+  --color-error: #EF4444;
+  --radio-md: 10px;
+  --radio-lg: 16px;
+  --sombra-suave: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
 }
 
 * {
@@ -28,28 +32,27 @@ body {
   font-family: 'Inter', sans-serif;
   background-color: var(--color-fondo);
   color: var(--color-texto);
-  line-height: 1.5;
+  line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.025em;
 }
 
 main {
   flex: 1;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
 }
 
 a {
-  color: var(--color-primario);
+  color: var(--color-primario-hover);
   text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  color: var(--color-acento-calido-hover);
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .btn-positivo {
@@ -57,12 +60,12 @@ a:hover {
   color: var(--color-blanco);
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: 8px;
   font-family: inherit;
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.15s ease;
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -71,13 +74,13 @@ a:hover {
 
 .btn-positivo:hover {
   background-color: var(--color-positivo-hover);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .btn-accion-tabla {
   display: inline-block;
   padding: 0.35rem 0.75rem;
-  border-radius: 0.375rem;
+  border-radius: 6px;
   background-color: var(--color-acento-oscuro);
   color: var(--color-blanco);
   font-size: 0.8rem;
