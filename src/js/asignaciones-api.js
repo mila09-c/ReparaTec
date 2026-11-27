@@ -119,17 +119,13 @@ async function consultarConFallback(llamadaApi, accionLocal) {
   }
 }
 
-function agregarRegistroLocal(lista, campoId, datos) {
-  const nuevo = { [campoId]: lista.length + 1, ...datos };
-  lista.unshift(nuevo);
-  return nuevo;
+function agregarLocal(lista, campoId, datos) {
+  const registro = { [campoId]: lista.length + 1, ...datos };
+  lista.unshift(registro);
+  return registro;
 }
 
-function esEntregaAsignacion(datos) {
-  return Boolean(datos.ID_Equipo) && (datos.Estado === 'Entregada' || Boolean(datos.Fecha_entrega));
-}
-
-function construirMovimientoEntrega(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre, estadoPrevio) {
+function armarMovimientoEntrega(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre, estadoPrevio) {
   const fechaMov = `${datos.Fecha_entrega || new Date().toISOString().split('T')[0]} 12:00:00`;
   const ubicacionAnterior =
     estadoPrevio === 'Asignado'
@@ -150,17 +146,16 @@ function construirMovimientoEntrega(datos, idAsignacion, equipoSeleccionado, ben
   };
 }
 
-async function sincronizarEntregaApi(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre) {
+async function sincronizarEntregaBackend(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre) {
   try {
     await actualizarEstadoEquipoApi(datos.ID_Equipo, 'Asignado', equipoSeleccionado || {});
   } catch {
-    // Si el backend ya actualiza el estado automáticamente, no bloqueamos
+    // Si el backend ya actualiza el estado, continuamos
   }
-
   try {
     await api.post(
       '/api/historial-equipos',
-      construirMovimientoEntrega(
+      armarMovimientoEntrega(
         datos,
         idAsignacion,
         equipoSeleccionado,
@@ -169,7 +164,7 @@ async function sincronizarEntregaApi(datos, idAsignacion, equipoSeleccionado, be
       )
     );
   } catch {
-    // Si el backend ya crea el historial automáticamente, no bloqueamos
+    // Si el backend ya registra el historial, continuamos
   }
 }
 
@@ -180,10 +175,11 @@ function aplicarEntregaLocal(datos, idAsignacion, equipoSeleccionado, beneficiar
   const estadoPrevio = eq?.Estado_equipo || equipoSeleccionado?.Estado_equipo || 'Listo para asignar';
   if (eq) eq.Estado_equipo = 'Asignado';
 
-  localStore.historial.unshift({
-    ID_Historial: localStore.historial.length + 1,
-    ...construirMovimientoEntrega(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre, estadoPrevio),
-  });
+  agregarLocal(
+    localStore.historial,
+    'ID_Historial',
+    armarMovimientoEntrega(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre, estadoPrevio)
+  );
 }
 
 export async function obtenerBeneficiariosApi() {
@@ -196,7 +192,7 @@ export async function obtenerBeneficiariosApi() {
 export async function crearBeneficiarioApi(datos) {
   return await consultarConFallback(
     () => api.post('/api/beneficiarios', datos),
-    () => agregarRegistroLocal(localStore.beneficiarios, 'ID_Beneficiario', datos)
+    () => agregarLocal(localStore.beneficiarios, 'ID_Beneficiario', datos)
   );
 }
 
@@ -210,7 +206,7 @@ export async function obtenerSolicitudesApi() {
 export async function crearSolicitudApi(datos) {
   return await consultarConFallback(
     () => api.post('/api/solicitudes', datos),
-    () => agregarRegistroLocal(localStore.solicitudes, 'ID_Solicitud', datos)
+    () => agregarLocal(localStore.solicitudes, 'ID_Solicitud', datos)
   );
 }
 
@@ -253,7 +249,7 @@ export async function obtenerAsignacionesApi() {
 }
 
 export async function crearAsignacionApi(datos, equipoSeleccionado = null, beneficiarioNombre = '') {
-  const esEntrega = esEntregaAsignacion(datos);
+  const esEntrega = Boolean(datos.ID_Equipo) && (datos.Estado === 'Entregada' || Boolean(datos.Fecha_entrega));
 
   try {
     const asignacionCreada = await api.post('/api/asignaciones', datos);
@@ -263,13 +259,13 @@ export async function crearAsignacionApi(datos, equipoSeleccionado = null, benef
         asignacionCreada?.id ??
         asignacionCreada?.data?.ID_Asignacion ??
         null;
-      await sincronizarEntregaApi(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre);
+      await sincronizarEntregaBackend(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre);
     }
     return asignacionCreada;
   } catch (error) {
     if (!USAR_FALLBACK_LOCAL || !esErrorDeEndpointNoDisponible(error)) throw error;
 
-    const nuevaAsignacion = agregarRegistroLocal(localStore.asignaciones, 'ID_Asignacion', datos);
+    const nuevaAsignacion = agregarLocal(localStore.asignaciones, 'ID_Asignacion', datos);
     if (esEntrega) {
       aplicarEntregaLocal(datos, nuevaAsignacion.ID_Asignacion, equipoSeleccionado, beneficiarioNombre);
     }
@@ -287,7 +283,7 @@ export async function obtenerEvaluacionesApi() {
 export async function crearEvaluacionApi(datos) {
   return await consultarConFallback(
     () => api.post('/api/evaluaciones', datos),
-    () => agregarRegistroLocal(localStore.evaluaciones, 'ID_Evaluacion', datos)
+    () => agregarLocal(localStore.evaluaciones, 'ID_Evaluacion', datos)
   );
 }
 
