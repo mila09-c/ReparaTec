@@ -1,46 +1,75 @@
 import { cargarParciales } from './main.js';
+import { obtenerCategorias, obtenerDonaciones } from './datos_equipo.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarParciales({ mostrarNav: true });
+
+  const categoriaSelect = document.getElementById('ID_Categoria');
+  const donacionSelect = document.getElementById('ID_Donacion');
+  const fechaInput = document.getElementById('Fecha_registro');
+
+  if (fechaInput && !fechaInput.value) {
+    fechaInput.value = new Date().toISOString().split('T')[0];
+  }
+
+  try {
+    const [categorias, donaciones] = await Promise.all([
+      obtenerCategorias(),
+      obtenerDonaciones()
+    ]);
+
+    categorias
+      .filter((cat) => cat.Estado === 'Activo')
+      .forEach((cat) => {
+        const option = document.createElement('option');
+        option.value = cat.ID_Categoria;
+        option.textContent = cat.Nombre_Categoria;
+        categoriaSelect.appendChild(option);
+      });
+
+    donaciones.forEach((don) => {
+      const option = document.createElement('option');
+      option.value = don.ID_Donacion;
+      option.textContent = `#${don.ID_Donacion} — ${don.Fecha_donacion} (${don.Tipo_entrega})`;
+      donacionSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error al cargar catálogos de categorías o donaciones:', error);
+  }
 
   const form = document.getElementById('form-equipo');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const codigoInput = document.getElementById('Codigo_inventario');
-    const marcaInput = document.getElementById('Marca');
-    const modeloInput = document.getElementById('Modelo');
-    const serieInput = document.getElementById('Numero_de_serie');
-    const estadoSelect = document.getElementById('Estado_equipo');
+    const campos = [
+      { id: 'Codigo_inventario', mensaje: 'El código de inventario es obligatorio.' },
+      { id: 'Numero_de_serie', mensaje: 'El número de serie es obligatorio.' },
+      { id: 'Marca', mensaje: 'La marca es obligatoria.' },
+      { id: 'Modelo', mensaje: 'El modelo es obligatorio.' },
+      { id: 'ID_Categoria', mensaje: 'Debe seleccionar una categoría.' },
+      { id: 'ID_Donacion', mensaje: 'Debe seleccionar una donación.' },
+      { id: 'Perfil_rendimiento', mensaje: 'Debe seleccionar un perfil de rendimiento.' },
+      { id: 'Fecha_registro', mensaje: 'La fecha de registro es obligatoria.' },
+      { id: 'Estado_equipo', mensaje: 'Debe seleccionar un estado para el equipo.' }
+    ];
 
-    document.getElementById('error-Codigo_inventario').textContent = '';
-    document.getElementById('error-Marca').textContent = '';
-    document.getElementById('error-Modelo').textContent = '';
-    document.getElementById('error-Numero_de_serie').textContent = '';
-    document.getElementById('error-Estado_equipo').textContent = '';
+    campos.forEach(({ id }) => {
+      const errorEl = document.getElementById(`error-${id}`);
+      if (errorEl) errorEl.textContent = '';
+    });
 
     let esValido = true;
 
-    if (!codigoInput.value.trim()) {
-      document.getElementById('error-Codigo_inventario').textContent = 'El código de inventario es obligatorio.';
-      esValido = false;
-    }
-    if (!marcaInput.value.trim()) {
-      document.getElementById('error-Marca').textContent = 'La marca es obligatoria.';
-      esValido = false;
-    }
-    if (!modeloInput.value.trim()) {
-      document.getElementById('error-Modelo').textContent = 'El modelo es obligatorio.';
-      esValido = false;
-    }
-    if (!serieInput.value.trim()) {
-      document.getElementById('error-Numero_de_serie').textContent = 'El número de serie es obligatorio.';
-      esValido = false;
-    }
-    if (!estadoSelect.value) {
-      document.getElementById('error-Estado_equipo').textContent = 'Debe seleccionar un estado para el equipo.';
-      esValido = false;
-    }
+    campos.forEach(({ id, mensaje }) => {
+      const input = document.getElementById(id);
+      const errorEl = document.getElementById(`error-${id}`);
+      const valor = input ? input.value.trim() : '';
+
+      if (!valor) {
+        if (errorEl) errorEl.textContent = mensaje;
+        esValido = false;
+      }
+    });
 
     if (esValido) {
       alert('¡Equipo validado y registrado exitosamente (Simulación)!');
