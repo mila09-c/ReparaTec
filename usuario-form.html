@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FORMULARIO DE USUARIOS — REPARATEC</title>
-    <link rel="stylesheet" href="/src/css/home.css" />
+    <title>Formulario de Usuarios — REPARATEC</title>
     <link rel="stylesheet" href="/src/css/usuarios.css" />
   </head>
   <body>
@@ -12,39 +11,77 @@
 
     <main class="container">
       <form id="form-usuario" class="card" novalidate>
-        <h2 id="form-titulo" style="margin-bottom: 1.25rem; color: var(--color-acento-oscuro);">Agregar Usuario</h2>
+        <h2 id="form-titulo" class="card-title">Usuarios</h2>
 
         <div class="form-group">
           <label for="Nombre_Usuario">Nombre(s) *</label>
-          <input type="text" id="Nombre_Usuario" placeholder="Ej. Carlos" required />
+          <input
+            type="text"
+            id="Nombre_Usuario"
+            name="Nombre_Usuario"
+            placeholder="Ej. Carlos"
+            required
+          />
         </div>
 
         <div class="form-group">
           <label for="Apellido">Apellidos *</label>
-          <input type="text" id="Apellido" placeholder="Ej. Mendoza Ruiz" required />
+          <input
+            type="text"
+            id="Apellido"
+            name="Apellido"
+            placeholder="Ej. Mendoza Ruiz"
+            required
+          />
         </div>
 
         <div class="form-group">
           <label for="Correo">Correo Electrónico *</label>
-          <input type="email" id="Correo" placeholder="usuario@reparatec.org" required />
+          <input
+            type="email"
+            id="Correo"
+            name="Correo"
+            placeholder="usuario@reparatec.org"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="Contrasena_hash">Contraseña *</label>
+          <input
+            type="password"
+            id="Contrasena_hash"
+            name="Contrasena_hash"
+            placeholder="••••••••"
+            required
+          />
         </div>
 
         <div class="form-group">
           <label for="Telefono">Teléfono *</label>
-          <input type="tel" id="Telefono" placeholder="2221001001" required />
+          <input
+            type="tel"
+            id="Telefono"
+            name="Telefono"
+            placeholder="2221001001"
+            required
+          />
         </div>
 
         <div class="form-group">
           <label for="ID_Rol">Rol *</label>
-          <select id="ID_Rol" required></select>
-          <option value="Activo">BENEFICIARIO</option>
-          <option value="Inactivo">DONADOR</option>
-          <option value="Inactivo">TECNICO</option>
+          <select id="ID_Rol" name="ID_Rol" required>
+            <option value="">Selecciona un rol...</option>
+            <option value="1">Administrador</option>
+            <option value="2">Técnico</option>
+            <option value="3">Donador</option>
+            <option value="4">Beneficiario</option>
+          </select>
         </div>
 
         <div class="form-group">
           <label for="Estado">Estado *</label>
-          <select id="Estado" required>
+          <select id="Estado" name="Estado" required>
             <option value="Activo">Activo</option>
             <option value="Inactivo">Inactivo</option>
           </select>
