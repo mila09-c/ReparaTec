@@ -93,60 +93,53 @@ function extraerLista(respuesta, clavesPosibles = []) {
   for (const clave of clavesPosibles) {
     if (Array.isArray(respuesta[clave])) return respuesta[clave];
   }
-  if (Array.isArray(respuesta.data)) return respuesta.data;
-  if (Array.isArray(respuesta.rows)) return respuesta.rows;
-  return [];
+  return respuesta.data ?? respuesta.rows ?? [];
 }
 
 function esErrorDeEndpointNoDisponible(error) {
   const msg = String(error?.message || '').toLowerCase();
-  return (
-    msg.includes('no se pudo conectar') ||
-    msg.includes('failed to fetch') ||
-    msg.includes('404') ||
-    msg.includes('not found') ||
-    msg.includes('cannot get') ||
-    msg.includes('cannot post') ||
-    msg.includes('cannot put')
-  );
+  return [
+    'no se pudo conectar',
+    'failed to fetch',
+    '404',
+    'not found',
+    'cannot get',
+    'cannot post',
+    'cannot put',
+  ].some((p) => msg.includes(p));
 }
 
 async function consultarConFallback(llamadaApi, accionLocal) {
-  if (!USAR_FALLBACK_LOCAL) {
-    return await llamadaApi();
-  }
+  if (!USAR_FALLBACK_LOCAL) return await llamadaApi();
   try {
     return await llamadaApi();
   } catch (error) {
-    if (esErrorDeEndpointNoDisponible(error)) {
-      return await accionLocal();
-    }
+    if (esErrorDeEndpointNoDisponible(error)) return await accionLocal();
     throw error;
   }
 }
 
-function aplicarEntregaLocal(datos, idAsignacion, equipoSeleccionado = null, beneficiarioNombre = '') {
-  const esEntrega = datos.Estado === 'Entregada' || Boolean(datos.Fecha_entrega);
-  if (!datos.ID_Equipo || !esEntrega) return;
+function agregarRegistroLocal(lista, campoId, datos) {
+  const nuevo = { [campoId]: lista.length + 1, ...datos };
+  lista.unshift(nuevo);
+  return nuevo;
+}
 
-  const eq = localStore.equipos.find(
-    (item) => Number(item.ID_Equipo ?? item.id) === Number(datos.ID_Equipo)
-  );
-  const estadoPrevio = eq?.Estado_equipo || equipoSeleccionado?.Estado_equipo || 'Listo para asignar';
+function esEntregaAsignacion(datos) {
+  return Boolean(datos.ID_Equipo) && (datos.Estado === 'Entregada' || Boolean(datos.Fecha_entrega));
+}
 
-  if (eq) {
-    eq.Estado_equipo = 'Asignado';
-  }
-
+function construirMovimientoEntrega(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre, estadoPrevio) {
   const fechaMov = `${datos.Fecha_entrega || new Date().toISOString().split('T')[0]} 12:00:00`;
   const ubicacionAnterior =
-    estadoPrevio === 'Asignado' ? 'Almacén ReparaTec' : `Almacén (${estadoPrevio})`;
+    estadoPrevio === 'Asignado'
+      ? 'Almacén ReparaTec'
+      : `Almacén (${estadoPrevio || 'Listo para asignar'})`;
   const ubicacionNueva = beneficiarioNombre
     ? `${beneficiarioNombre} — Asignado`
     : 'Asignado a Beneficiario';
 
-  localStore.historial.unshift({
-    ID_Historial: localStore.historial.length + 1,
+  return {
     Fecha_movimiento: fechaMov,
     Tipo_movimiento: 'Entrega',
     Descripcion: `Entrega vinculada a asignación${idAsignacion ? ` #${idAsignacion}` : ''} (${datos.Condiciones_entrega})`,
@@ -154,6 +147,42 @@ function aplicarEntregaLocal(datos, idAsignacion, equipoSeleccionado = null, ben
     Ubicacion_nueva: ubicacionNueva,
     ID_Asignacion: idAsignacion ? Number(idAsignacion) : null,
     ID_Equipo: Number(datos.ID_Equipo),
+  };
+}
+
+async function sincronizarEntregaApi(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre) {
+  try {
+    await actualizarEstadoEquipoApi(datos.ID_Equipo, 'Asignado', equipoSeleccionado || {});
+  } catch {
+    // Si el backend ya actualiza el estado automáticamente, no bloqueamos
+  }
+
+  try {
+    await api.post(
+      '/api/historial-equipos',
+      construirMovimientoEntrega(
+        datos,
+        idAsignacion,
+        equipoSeleccionado,
+        beneficiarioNombre,
+        equipoSeleccionado?.Estado_equipo
+      )
+    );
+  } catch {
+    // Si el backend ya crea el historial automáticamente, no bloqueamos
+  }
+}
+
+function aplicarEntregaLocal(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre) {
+  const eq = localStore.equipos.find(
+    (item) => Number(item.ID_Equipo ?? item.id) === Number(datos.ID_Equipo)
+  );
+  const estadoPrevio = eq?.Estado_equipo || equipoSeleccionado?.Estado_equipo || 'Listo para asignar';
+  if (eq) eq.Estado_equipo = 'Asignado';
+
+  localStore.historial.unshift({
+    ID_Historial: localStore.historial.length + 1,
+    ...construirMovimientoEntrega(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre, estadoPrevio),
   });
 }
 
@@ -167,14 +196,7 @@ export async function obtenerBeneficiariosApi() {
 export async function crearBeneficiarioApi(datos) {
   return await consultarConFallback(
     () => api.post('/api/beneficiarios', datos),
-    () => {
-      const nuevo = {
-        ID_Beneficiario: localStore.beneficiarios.length + 1,
-        ...datos,
-      };
-      localStore.beneficiarios.unshift(nuevo);
-      return nuevo;
-    }
+    () => agregarRegistroLocal(localStore.beneficiarios, 'ID_Beneficiario', datos)
   );
 }
 
@@ -188,14 +210,7 @@ export async function obtenerSolicitudesApi() {
 export async function crearSolicitudApi(datos) {
   return await consultarConFallback(
     () => api.post('/api/solicitudes', datos),
-    () => {
-      const nueva = {
-        ID_Solicitud: localStore.solicitudes.length + 1,
-        ...datos,
-      };
-      localStore.solicitudes.unshift(nueva);
-      return nueva;
-    }
+    () => agregarRegistroLocal(localStore.solicitudes, 'ID_Solicitud', datos)
   );
 }
 
@@ -238,101 +253,28 @@ export async function obtenerAsignacionesApi() {
 }
 
 export async function crearAsignacionApi(datos, equipoSeleccionado = null, beneficiarioNombre = '') {
-  if (USAR_FALLBACK_LOCAL) {
-    try {
-      const asignacionCreada = await api.post('/api/asignaciones', datos);
+  const esEntrega = esEntregaAsignacion(datos);
+
+  try {
+    const asignacionCreada = await api.post('/api/asignaciones', datos);
+    if (esEntrega) {
       const idAsignacion =
         asignacionCreada?.ID_Asignacion ??
         asignacionCreada?.id ??
         asignacionCreada?.data?.ID_Asignacion ??
         null;
-
-      const esEntrega = datos.Estado === 'Entregada' || Boolean(datos.Fecha_entrega);
-      if (datos.ID_Equipo && esEntrega) {
-        try {
-          await actualizarEstadoEquipoApi(datos.ID_Equipo, 'Asignado', equipoSeleccionado || {});
-        } catch {
-          // Si ya lo actualizó el backend, continuamos
-        }
-
-        const fechaMov = `${datos.Fecha_entrega || new Date().toISOString().split('T')[0]} 12:00:00`;
-        const ubicacionAnterior = equipoSeleccionado?.Estado_equipo
-          ? `Almacén (${equipoSeleccionado.Estado_equipo})`
-          : 'Almacén ReparaTec';
-        const ubicacionNueva = beneficiarioNombre
-          ? `${beneficiarioNombre} — Asignado`
-          : 'Asignado a Beneficiario';
-
-        try {
-          await api.post('/api/historial-equipos', {
-            ID_Equipo: Number(datos.ID_Equipo),
-            ID_Asignacion: idAsignacion ? Number(idAsignacion) : null,
-            Fecha_movimiento: fechaMov,
-            Tipo_movimiento: 'Entrega',
-            Descripcion: `Entrega vinculada a asignación${idAsignacion ? ` #${idAsignacion}` : ''} (${datos.Condiciones_entrega})`,
-            Ubicacion_anterior: ubicacionAnterior,
-            Ubicacion_nueva: ubicacionNueva,
-          });
-        } catch {
-        }
-      }
-      return asignacionCreada;
-    } catch (error) {
-      if (!esErrorDeEndpointNoDisponible(error)) throw error;
-
-      const nuevaAsignacion = {
-        ID_Asignacion: localStore.asignaciones.length + 1,
-        ...datos,
-      };
-      localStore.asignaciones.unshift(nuevaAsignacion);
-      aplicarEntregaLocal(
-        datos,
-        nuevaAsignacion.ID_Asignacion,
-        equipoSeleccionado,
-        beneficiarioNombre
-      );
-      return nuevaAsignacion;
+      await sincronizarEntregaApi(datos, idAsignacion, equipoSeleccionado, beneficiarioNombre);
     }
+    return asignacionCreada;
+  } catch (error) {
+    if (!USAR_FALLBACK_LOCAL || !esErrorDeEndpointNoDisponible(error)) throw error;
+
+    const nuevaAsignacion = agregarRegistroLocal(localStore.asignaciones, 'ID_Asignacion', datos);
+    if (esEntrega) {
+      aplicarEntregaLocal(datos, nuevaAsignacion.ID_Asignacion, equipoSeleccionado, beneficiarioNombre);
+    }
+    return nuevaAsignacion;
   }
-
-  const asignacionCreada = await api.post('/api/asignaciones', datos);
-  const esEntrega = datos.Estado === 'Entregada' || Boolean(datos.Fecha_entrega);
-
-  if (datos.ID_Equipo && esEntrega) {
-    const idAsignacion =
-      asignacionCreada?.ID_Asignacion ??
-      asignacionCreada?.id ??
-      asignacionCreada?.data?.ID_Asignacion ??
-      null;
-
-    try {
-      await actualizarEstadoEquipoApi(datos.ID_Equipo, 'Asignado', equipoSeleccionado || {});
-    } catch {
-    }
-
-    const fechaMov = `${datos.Fecha_entrega || new Date().toISOString().split('T')[0]} 12:00:00`;
-    const ubicacionAnterior = equipoSeleccionado?.Estado_equipo
-      ? `Almacén (${equipoSeleccionado.Estado_equipo})`
-      : 'Almacén ReparaTec';
-    const ubicacionNueva = beneficiarioNombre
-      ? `${beneficiarioNombre} — Asignado`
-      : 'Asignado a Beneficiario';
-
-    try {
-      await api.post('/api/historial-equipos', {
-        ID_Equipo: Number(datos.ID_Equipo),
-        ID_Asignacion: idAsignacion ? Number(idAsignacion) : null,
-        Fecha_movimiento: fechaMov,
-        Tipo_movimiento: 'Entrega',
-        Descripcion: `Entrega vinculada a asignación${idAsignacion ? ` #${idAsignacion}` : ''} (${datos.Condiciones_entrega})`,
-        Ubicacion_anterior: ubicacionAnterior,
-        Ubicacion_nueva: ubicacionNueva,
-      });
-    } catch {
-    }
-  }
-
-  return asignacionCreada;
 }
 
 export async function obtenerEvaluacionesApi() {
@@ -345,14 +287,7 @@ export async function obtenerEvaluacionesApi() {
 export async function crearEvaluacionApi(datos) {
   return await consultarConFallback(
     () => api.post('/api/evaluaciones', datos),
-    () => {
-      const nueva = {
-        ID_Evaluacion: localStore.evaluaciones.length + 1,
-        ...datos,
-      };
-      localStore.evaluaciones.unshift(nueva);
-      return nueva;
-    }
+    () => agregarRegistroLocal(localStore.evaluaciones, 'ID_Evaluacion', datos)
   );
 }
 
