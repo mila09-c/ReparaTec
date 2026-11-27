@@ -2,64 +2,84 @@
 
 .site-footer {
   background-color: var(--color-blanco);
-  border-top: 1px solid var(--color-borde);
-  padding: 2.5rem 1.5rem 1.5rem;
+  border-top: 3px solid var(--color-acento-oscuro);
+  padding: 3rem 1.5rem 1.5rem;
   margin-top: auto;
   color: var(--color-texto-suave);
   font-size: 0.875rem;
 }
 
 .footer-container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 2rem;
+  gap: 2.25rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--color-borde);
 }
 
 .footer-col h3 {
   color: var(--color-texto);
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 0.55rem;
 }
 
 .footer-col h4 {
   color: var(--color-texto);
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.85rem;
 }
 
 .footer-col p {
   margin-bottom: 0.5rem;
+  line-height: 1.55;
+}
+
+.footer-col a {
+  color: var(--color-primario-hover);
+  font-weight: 500;
+}
+
+.footer-col a:hover {
+  color: var(--color-primario);
+  text-decoration: underline;
 }
 
 .footer-authors {
-  margin-top: 0.75rem;
+  margin-top: 0.85rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed var(--color-borde);
   color: var(--color-texto);
-  font-size: 0.85rem;
+  font-size: 0.84rem;
 }
 
 .footer-links {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.55rem;
 }
 
 .footer-links a {
+  display: inline-flex;
+  align-items: center;
   color: var(--color-texto-suave);
+  font-weight: 500;
 }
 
 .footer-links a:hover {
-  color: var(--color-primario);
+  color: var(--color-primario-hover);
+  transform: translateX(3px);
+  text-decoration: none;
 }
 
 .footer-bottom {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 1.5rem auto 0;
   text-align: center;
   font-size: 0.8rem;
