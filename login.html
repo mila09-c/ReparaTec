@@ -10,11 +10,16 @@
   <div id="header-container"></div>
 
   <main class="login-wrapper">
+    <div class="login-bg-grid" aria-hidden="true"></div>
+
     <section class="login-card" aria-labelledby="login-title">
       <div class="login-header">
-        <img src="/image/logo.jpg" alt="Logo ReparaTec" />
+        <span class="login-badge">ACCESO</span>
+        <div class="login-logo-wrap">
+          <img src="/image/logo.jpg" alt="Logo ReparaTec" />
+        </div>
         <h1 id="login-title">Acceso a ReparaTec</h1>
-        <p>Ingresa tu correo y contraseña para continuar</p>
+        <p>Ingresa tus datos para continuar</p>
       </div>
 
       <form id="form-login" novalidate>
@@ -25,6 +30,7 @@
             id="Correo"
             name="email"
             placeholder="usuario@reparatec.org"
+            autocomplete="email"
             required
           />
           <span class="error-msg" id="error-Correo"></span>
@@ -37,15 +43,20 @@
             id="Contrasena_hash"
             name="password"
             placeholder="••••••••"
+            autocomplete="current-password"
             required
           />
           <span class="error-msg" id="error-Contrasena"></span>
         </div>
 
-        <p class="error" id="error-login" hidden></p>
+        <p class="error-banner" id="error-login" role="alert" hidden></p>
 
         <button type="submit" class="btn-positivo">Iniciar sesión</button>
       </form>
+
+      <div class="login-footer-note">
+        ¿Aún no tienes cuenta? <a href="registro.html">Solicitar acceso</a>
+      </div>
     </section>
   </main>
 
