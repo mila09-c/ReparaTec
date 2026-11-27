@@ -5,8 +5,6 @@ import {
   crearSolicitudApi,
 } from './asignaciones-api.js';
 
-const hoy = () => new Date().toISOString().split('T')[0];
-
 function pintarMensaje(el, texto, esError = false) {
   if (!el) return;
   const borde = esError ? '#dc2626' : '#16a34a';
@@ -22,34 +20,26 @@ function nombreBeneficiario(lista, idBen, nombreDirecto) {
 }
 
 function validarCampos(reglas) {
-  return reglas.every(([id, valor, msg]) => {
+  let ok = true;
+  reglas.forEach(([id, valor, msg]) => {
     const errEl = document.getElementById(`error-${id}`);
-    if (errEl) errEl.textContent = valor ? '' : msg;
-    return Boolean(valor);
+    if (errEl) errEl.textContent = '';
+    if (!valor) {
+      if (errEl) errEl.textContent = msg;
+      ok = false;
+    }
   });
+  return ok;
 }
 
-async function iniciarVista({
-  fechaId,
-  tbodyId,
-  formId,
-  mensajeVacio,
-  textoExito,
-  textoErrorCargar,
-  textoErrorGuardar,
-  obtenerItemsApi,
-  crearItemApi,
-  renderFila,
-  obtenerDatosForm,
-}) {
+document.addEventListener('DOMContentLoaded', async () => {
   await cargarParciales({ mostrarNav: true });
-
   const benSelect = document.getElementById('ID_Beneficiario');
-  const fechaInput = document.getElementById(fechaId);
-  const tbody = document.getElementById(tbodyId);
-  const form = document.getElementById(formId);
+  const fechaInput = document.getElementById('Fecha_solicitud');
+  const tbody = document.getElementById('tabla-solicitudes-body');
+  const form = document.getElementById('form-solicitud');
   const mensajeEl = document.getElementById('mensaje-estado');
-
+  const hoy = () => new Date().toISOString().split('T')[0];
   if (fechaInput && !fechaInput.value) fechaInput.value = hoy();
 
   let beneficiarios = [];
@@ -67,12 +57,19 @@ async function iniciarVista({
 
   const renderTabla = async () => {
     try {
-      const lista = await obtenerItemsApi();
-      tbody.innerHTML = lista?.length
-        ? lista.map((item) => renderFila(item, beneficiarios)).join('')
-        : `<tr><td colspan="7" style="text-align: center; padding: 1.5rem;">${mensajeVacio}</td></tr>`;
+      const lista = await obtenerSolicitudesApi();
+      if (!lista?.length) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 1.5rem;">No hay solicitudes registradas.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = lista
+        .map((s) => {
+          const ben = nombreBeneficiario(beneficiarios, s.ID_Beneficiario, s.Beneficiario_Nombre);
+          return `<tr><td>#${s.ID_Solicitud ?? s.id ?? ''}</td><td><strong>${ben}</strong></td><td>${s.Fecha_solicitud}</td><td><strong>${s.Motivo}</strong><br><small>${s.Uso_destinado}</small></td><td><span class="estado-pill">${s.Prioridad}</span></td><td><span class="estado-pill">${s.Estado}</span></td><td>${s.Observaciones || '—'}</td></tr>`;
+        })
+        .join('');
     } catch (err) {
-      pintarMensaje(mensajeEl, err.message || textoErrorCargar, true);
+      pintarMensaje(mensajeEl, err.message || 'Error al cargar solicitudes.', true);
     }
   };
 
@@ -80,63 +77,38 @@ async function iniciarVista({
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const { reglas, payload } = obtenerDatosForm(benSelect, fechaInput);
-    if (!validarCampos(reglas)) return;
-
+    const idBen = benSelect.value;
+    const fecha = fechaInput.value.trim();
+    const prioridad = document.getElementById('Prioridad').value;
+    const estado = document.getElementById('Estado').value;
+    const motivo = document.getElementById('Motivo').value.trim();
+    const uso = document.getElementById('Uso_destinado').value.trim();
+    const obs = document.getElementById('Observaciones').value.trim();
+    const valido = validarCampos([
+      ['ID_Beneficiario', idBen, 'Seleccione un beneficiario.'],
+      ['Fecha_solicitud', fecha, 'Indique la fecha.'],
+      ['Prioridad', prioridad, 'Seleccione la prioridad.'],
+      ['Estado', estado, 'Seleccione el estado.'],
+      ['Motivo', motivo, 'Ingrese el motivo.'],
+      ['Uso_destinado', uso, 'Ingrese el uso destinado.'],
+    ]);
+    if (!valido) return;
     try {
-      await crearItemApi(payload);
+      await crearSolicitudApi({
+        ID_Beneficiario: Number(idBen),
+        Fecha_solicitud: fecha,
+        Prioridad: prioridad,
+        Estado: estado,
+        Motivo: motivo,
+        Uso_destinado: uso,
+        Observaciones: obs,
+      });
       await renderTabla();
       form.reset();
-      if (fechaInput) fechaInput.value = hoy();
-      pintarMensaje(mensajeEl, textoExito);
+      fechaInput.value = hoy();
+      pintarMensaje(mensajeEl, 'Solicitud registrada correctamente.');
     } catch (err) {
-      pintarMensaje(mensajeEl, err.message || textoErrorGuardar, true);
+      pintarMensaje(mensajeEl, err.message || 'No se pudo registrar la solicitud.', true);
     }
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  iniciarVista({
-    fechaId: 'Fecha_solicitud',
-    tbodyId: 'tabla-solicitudes-body',
-    formId: 'form-solicitud',
-    mensajeVacio: 'No hay solicitudes registradas.',
-    textoExito: 'Solicitud registrada correctamente.',
-    textoErrorCargar: 'Error al cargar solicitudes.',
-    textoErrorGuardar: 'No se pudo registrar la solicitud.',
-    obtenerItemsApi: obtenerSolicitudesApi,
-    crearItemApi: crearSolicitudApi,
-    renderFila: (s, beneficiarios) => {
-      const ben = nombreBeneficiario(beneficiarios, s.ID_Beneficiario, s.Beneficiario_Nombre);
-      return `<tr><td>#${s.ID_Solicitud ?? s.id ?? ''}</td><td><strong>${ben}</strong></td><td>${s.Fecha_solicitud}</td><td><strong>${s.Motivo}</strong><br><small>${s.Uso_destinado}</small></td><td><span class="estado-pill">${s.Prioridad}</span></td><td><span class="estado-pill">${s.Estado}</span></td><td>${s.Observaciones || '—'}</td></tr>`;
-    },
-    obtenerDatosForm: (benSelect, fechaInput) => {
-      const idBen = benSelect.value;
-      const fecha = fechaInput.value.trim();
-      const prioridad = document.getElementById('Prioridad').value;
-      const estado = document.getElementById('Estado').value;
-      const motivo = document.getElementById('Motivo').value.trim();
-      const uso = document.getElementById('Uso_destinado').value.trim();
-      const obs = document.getElementById('Observaciones').value.trim();
-      return {
-        reglas: [
-          ['ID_Beneficiario', idBen, 'Seleccione un beneficiario.'],
-          ['Fecha_solicitud', fecha, 'Indique la fecha.'],
-          ['Prioridad', prioridad, 'Seleccione la prioridad.'],
-          ['Estado', estado, 'Seleccione el estado.'],
-          ['Motivo', motivo, 'Ingrese el motivo.'],
-          ['Uso_destinado', uso, 'Ingrese el uso destinado.'],
-        ],
-        payload: {
-          ID_Beneficiario: Number(idBen),
-          Fecha_solicitud: fecha,
-          Prioridad: prioridad,
-          Estado: estado,
-          Motivo: motivo,
-          Uso_destinado: uso,
-          Observaciones: obs,
-        },
-      };
-    },
   });
 });
