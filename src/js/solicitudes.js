@@ -5,138 +5,119 @@ import {
   crearSolicitudApi,
 } from './asignaciones-api.js';
 
-const hoy = () => new Date().toISOString().split('T')[0];
+const obtenerFechaActual = () => new Date().toISOString().split('T')[0];
 
-function pintarMensaje(el, texto, esError = false) {
-  if (!el) return;
-  const borde = esError ? '#dc2626' : '#16a34a';
-  const color = esError ? '#991b1b' : '#166534';
-  const fondo = esError ? '#fef2f2' : '#f0fdf4';
-  el.innerHTML = `<div style="padding: 0.75rem 1rem; border-radius: 0.5rem; border: 1px solid ${borde}; color: ${color}; background: ${fondo};">${texto}</div>`;
+function mostrarAviso(destino, mensaje, esError = false) {
+  if (!destino) return;
+  const paleta = esError
+    ? 'border-color: #dc2626; color: #991b1b; background: #fef2f2;'
+    : 'border-color: #16a34a; color: #166534; background: #f0fdf4;';
+  destino.innerHTML = `<div style="padding: 0.75rem 1rem; border-radius: 0.5rem; border: 1px solid; ${paleta}">${mensaje}</div>`;
 }
 
-function nombreBeneficiario(lista, idBen, nombreDirecto) {
+function obtenerEtiquetaBeneficiario(listaBen, idBeneficiario, nombreDirecto) {
   if (nombreDirecto) return nombreDirecto;
-  const b = lista.find((item) => Number(item.ID_Beneficiario ?? item.id) === Number(idBen));
-  return b ? `${b.Institucion} (${b.Tipo_beneficiario})` : `Beneficiario #${idBen}`;
+  const item = listaBen.find(
+    (b) => Number(b.ID_Beneficiario ?? b.id) === Number(idBeneficiario)
+  );
+  return item
+    ? `${item.Institucion} (${item.Tipo_beneficiario})`
+    : `Beneficiario #${idBeneficiario}`;
 }
 
-function validarCampos(reglas) {
-  return reglas.every(([id, valor, msg]) => {
-    const errEl = document.getElementById(`error-${id}`);
-    if (errEl) errEl.textContent = valor ? '' : msg;
-    return Boolean(valor);
-  });
-}
-
-async function iniciarVista({
-  fechaId,
-  tbodyId,
-  formId,
-  mensajeVacio,
-  textoExito,
-  textoErrorCargar,
-  textoErrorGuardar,
-  obtenerItemsApi,
-  crearItemApi,
-  renderFila,
-  obtenerDatosForm,
-}) {
+document.addEventListener('DOMContentLoaded', async () => {
   await cargarParciales({ mostrarNav: true });
 
-  const benSelect = document.getElementById('ID_Beneficiario');
-  const fechaInput = document.getElementById(fechaId);
-  const tbody = document.getElementById(tbodyId);
-  const form = document.getElementById(formId);
-  const mensajeEl = document.getElementById('mensaje-estado');
+  const comboBeneficiario = document.getElementById('ID_Beneficiario');
+  const campoFecha = document.getElementById('Fecha_solicitud');
+  const cuerpoSolicitudes = document.getElementById('tabla-solicitudes-body');
+  const formSolicitud = document.getElementById('form-solicitud');
+  const cajaEstado = document.getElementById('mensaje-estado');
 
-  if (fechaInput && !fechaInput.value) fechaInput.value = hoy();
-
-  let beneficiarios = [];
-  try {
-    beneficiarios = await obtenerBeneficiariosApi();
-    beneficiarios.forEach((b) => {
-      const opt = document.createElement('option');
-      opt.value = b.ID_Beneficiario ?? b.id;
-      opt.textContent = `${b.Institucion} (${b.Tipo_beneficiario})`;
-      benSelect.appendChild(opt);
-    });
-  } catch (err) {
-    pintarMensaje(mensajeEl, err.message || 'Error al cargar beneficiarios.', true);
+  if (campoFecha && !campoFecha.value) {
+    campoFecha.value = obtenerFechaActual();
   }
 
-  const renderTabla = async () => {
+  let listaBeneficiarios = [];
+  try {
+    listaBeneficiarios = await obtenerBeneficiariosApi();
+    listaBeneficiarios.forEach((benef) => {
+      const opt = document.createElement('option');
+      opt.value = benef.ID_Beneficiario ?? benef.id;
+      opt.textContent = `${benef.Institucion} (${benef.Tipo_beneficiario})`;
+      comboBeneficiario.appendChild(opt);
+    });
+  } catch (error) {
+    mostrarAviso(cajaEstado, error.message || 'Error al cargar beneficiarios.', true);
+  }
+
+  const pintarSolicitudes = async () => {
     try {
-      const lista = await obtenerItemsApi();
-      tbody.innerHTML = lista?.length
-        ? lista.map((item) => renderFila(item, beneficiarios)).join('')
-        : `<tr><td colspan="7" style="text-align: center; padding: 1.5rem;">${mensajeVacio}</td></tr>`;
-    } catch (err) {
-      pintarMensaje(mensajeEl, err.message || textoErrorCargar, true);
+      const datos = await obtenerSolicitudesApi();
+      if (!Array.isArray(datos) || datos.length === 0) {
+        cuerpoSolicitudes.innerHTML =
+          '<tr><td colspan="7" style="text-align: center; padding: 1.5rem;">No hay solicitudes registradas.</td></tr>';
+        return;
+      }
+
+      cuerpoSolicitudes.innerHTML = datos
+        .map((sol) => {
+          const etiquetaBen = obtenerEtiquetaBeneficiario(
+            listaBeneficiarios,
+            sol.ID_Beneficiario,
+            sol.Beneficiario_Nombre
+          );
+          const codigo = sol.ID_Solicitud ?? sol.id ?? '';
+          const obsTexto = sol.Observaciones || '—';
+          return `<tr><td>#${codigo}</td><td><strong>${etiquetaBen}</strong></td><td>${sol.Fecha_solicitud}</td><td><strong>${sol.Motivo}</strong><br><small>${sol.Uso_destinado}</small></td><td><span class="estado-pill">${sol.Prioridad}</span></td><td><span class="estado-pill">${sol.Estado}</span></td><td>${obsTexto}</td></tr>`;
+        })
+        .join('');
+    } catch (error) {
+      mostrarAviso(cajaEstado, error.message || 'Error al cargar solicitudes.', true);
     }
   };
 
-  await renderTabla();
+  await pintarSolicitudes();
 
-  form.addEventListener('submit', async (e) => {
+  formSolicitud.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const { reglas, payload } = obtenerDatosForm(benSelect, fechaInput);
-    if (!validarCampos(reglas)) return;
+
+    const validaciones = [
+      ['ID_Beneficiario', comboBeneficiario.value, 'Seleccione un beneficiario.'],
+      ['Fecha_solicitud', campoFecha.value.trim(), 'Indique la fecha.'],
+      ['Prioridad', document.getElementById('Prioridad').value, 'Seleccione la prioridad.'],
+      ['Estado', document.getElementById('Estado').value, 'Seleccione el estado.'],
+      ['Motivo', document.getElementById('Motivo').value.trim(), 'Ingrese el motivo.'],
+      ['Uso_destinado', document.getElementById('Uso_destinado').value.trim(), 'Ingrese el uso destinado.'],
+    ];
+
+    let todoOk = true;
+    for (const [idCampo, valorCampo, textoError] of validaciones) {
+      const elemError = document.getElementById(`error-${idCampo}`);
+      if (elemError) {
+        elemError.textContent = valorCampo ? '' : textoError;
+      }
+      if (!valorCampo) todoOk = false;
+    }
+
+    if (!todoOk) return;
 
     try {
-      await crearItemApi(payload);
-      await renderTabla();
-      form.reset();
-      if (fechaInput) fechaInput.value = hoy();
-      pintarMensaje(mensajeEl, textoExito);
-    } catch (err) {
-      pintarMensaje(mensajeEl, err.message || textoErrorGuardar, true);
+      await crearSolicitudApi({
+        ID_Beneficiario: Number(comboBeneficiario.value),
+        Fecha_solicitud: campoFecha.value.trim(),
+        Prioridad: document.getElementById('Prioridad').value,
+        Estado: document.getElementById('Estado').value,
+        Motivo: document.getElementById('Motivo').value.trim(),
+        Uso_destinado: document.getElementById('Uso_destinado').value.trim(),
+        Observaciones: document.getElementById('Observaciones').value.trim(),
+      });
+      await pintarSolicitudes();
+      formSolicitud.reset();
+      campoFecha.value = obtenerFechaActual();
+      mostrarAviso(cajaEstado, 'Solicitud registrada correctamente.');
+    } catch (error) {
+      mostrarAviso(cajaEstado, error.message || 'No se pudo registrar la solicitud.', true);
     }
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  iniciarVista({
-    fechaId: 'Fecha_solicitud',
-    tbodyId: 'tabla-solicitudes-body',
-    formId: 'form-solicitud',
-    mensajeVacio: 'No hay solicitudes registradas.',
-    textoExito: 'Solicitud registrada correctamente.',
-    textoErrorCargar: 'Error al cargar solicitudes.',
-    textoErrorGuardar: 'No se pudo registrar la solicitud.',
-    obtenerItemsApi: obtenerSolicitudesApi,
-    crearItemApi: crearSolicitudApi,
-    renderFila: (s, beneficiarios) => {
-      const ben = nombreBeneficiario(beneficiarios, s.ID_Beneficiario, s.Beneficiario_Nombre);
-      return `<tr><td>#${s.ID_Solicitud ?? s.id ?? ''}</td><td><strong>${ben}</strong></td><td>${s.Fecha_solicitud}</td><td><strong>${s.Motivo}</strong><br><small>${s.Uso_destinado}</small></td><td><span class="estado-pill">${s.Prioridad}</span></td><td><span class="estado-pill">${s.Estado}</span></td><td>${s.Observaciones || '—'}</td></tr>`;
-    },
-    obtenerDatosForm: (benSelect, fechaInput) => {
-      const idBen = benSelect.value;
-      const fecha = fechaInput.value.trim();
-      const prioridad = document.getElementById('Prioridad').value;
-      const estado = document.getElementById('Estado').value;
-      const motivo = document.getElementById('Motivo').value.trim();
-      const uso = document.getElementById('Uso_destinado').value.trim();
-      const obs = document.getElementById('Observaciones').value.trim();
-      return {
-        reglas: [
-          ['ID_Beneficiario', idBen, 'Seleccione un beneficiario.'],
-          ['Fecha_solicitud', fecha, 'Indique la fecha.'],
-          ['Prioridad', prioridad, 'Seleccione la prioridad.'],
-          ['Estado', estado, 'Seleccione el estado.'],
-          ['Motivo', motivo, 'Ingrese el motivo.'],
-          ['Uso_destinado', uso, 'Ingrese el uso destinado.'],
-        ],
-        payload: {
-          ID_Beneficiario: Number(idBen),
-          Fecha_solicitud: fecha,
-          Prioridad: prioridad,
-          Estado: estado,
-          Motivo: motivo,
-          Uso_destinado: uso,
-          Observaciones: obs,
-        },
-      };
-    },
   });
 });
