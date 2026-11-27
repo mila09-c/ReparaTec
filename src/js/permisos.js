@@ -6,5 +6,14 @@ export const permisos = {
 
 export function puedeEntrar(pagina, rol) {
   const roles = permisos[pagina];
-  return !roles || roles.includes(rol);
+  return !roles || roles.includes(normalizarRol(rol));
+}
+
+export function normalizarRol(rol) {
+  if (!rol) return '';
+  return String(rol)
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 }
