@@ -8,35 +8,101 @@
 </head>
 <body>
   <div id="header-container"></div>
-
-  <main class="hero-container">
+  
+  <main class="landing-wrapper">
     <section class="hero-section">
-      <div class="hero-content">
-        <h1>Conectamos donaciones para transformar la educación</h1>
-        <p class="hero-description">
-          REPARATEC es un sistema dedicado al registro, reacondicionamiento técnico, trazabilidad y asignación inteligente de dispositivos electrónicos.
-        </p>
-        <div class="hero-actions">
-          <a href="/login.html" class="btn-hero">Iniciar Sesión / Acceder</a>
+      <svg class="hero-lines-bg" viewBox="0 0 1440 700" fill="none" preserveAspectRatio="none">
+        <path d="M-100 650 C 400 500, 900 350, 1540 50" stroke="url(#gradLine1)" stroke-width="1.5" />
+        <path d="M-100 520 C 500 480, 1000 200, 1540 -50" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+        <defs>
+          <linearGradient id="gradLine1" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#0EA5E9" stop-opacity="0.1" />
+            <stop offset="50%" stop-color="#0EA5E9" stop-opacity="0.6" />
+            <stop offset="100%" stop-color="#10B981" stop-opacity="0.2" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <div class="hero-grid">
+        <div class="hero-left">
+          <span class="hero-badge">SISTEMA DE ECONOMÍA CIRCULAR EDUCATIVA</span>
+          <h1>Conectamos donaciones para transformar la educación.</h1>
+          
+          <div class="hero-cta-group">
+            <a href="/login.html" class="cta-line-link primary-cta">
+              <span>INICIAR SESIÓN</span>
+              <span class="arrow">→</span>
+            </a>
+            <a href="#alcance" class="cta-line-link secondary-cta">
+              <span>DESCUBRIR MÁS</span>
+              <span class="arrow">↓</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-center-art" aria-hidden="true">
+          <div class="tech-monolith">
+            <div class="monolith-layer layer-top">
+              <span>HARDWARE</span>
+            </div>
+            <div class="monolith-core"></div>
+            <div class="monolith-layer layer-bottom">
+              <span>REPARATEC</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="tech-spec-box">
+            <div class="spec-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="1.8">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <path d="M8 21h8M12 17v4" />
+                <path d="M9 10l2 2 4-4" stroke="#10B981" />
+              </svg>
+              <span>REPARATEC</span>
+            </div>
+            <div class="spec-detail">
+              <strong>GESTIÓN INTEGRAL DE ACTIVOS</strong>
+              <span>Registro, diagnóstico y entrega certificada.</span>
+            </div>
+          </div>
+          <p class="hero-description">
+            Plataforma dedicada al registro, reacondicionamiento técnico, trazabilidad y asignación inteligente de dispositivos electrónicos para instituciones educativas.
+          </p>
         </div>
       </div>
     </section>
 
-    <section class="features-section">
-      <h2>Servicios y Alcance del Sistema</h2>
+    <section id="alcance" class="features-section">
+      <div class="section-header">
+        <h2>Servicios y Alcance del Sistema</h2>
+      </div>
+
       <div class="cards-grid">
-        <div class="card">
+        <article class="card">
+          <div class="card-top-meta">
+            <span class="card-pill pill-blue">Recepción</span>
+          </div>
           <h3>Donación e Inventario</h3>
-          <p>Control de donadores, lotes recibidos, categorías de hardware e historial de movimientos.</p>
-        </div>
-        <div class="card">
+          <p>Control de donadores, lotes recibidos, categorías de hardware e historial completo de movimientos en almacén.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-top-meta">
+            <span class="card-pill pill-amber">Taller</span>
+          </div>
           <h3>Diagnóstico y Reparaciones</h3>
-          <p>Gestión de técnicos, diagnósticos, órdenes de reparación y refacciones utilizadas.</p>
-        </div>
-        <div class="card">
+          <p>Gestión de técnicos asignados, diagnósticos detallados, órdenes de reparación y control de refacciones utilizadas.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-top-meta">
+            <span class="card-pill pill-emerald">Entrega</span>
+          </div>
           <h3>Beneficiarios y Entregas</h3>
-          <p>Evaluación de beneficiarios, seguimiento de solicitudes y actas de asignación.</p>
-        </div>
+          <p>Evaluación socioeducativa de beneficiarios, seguimiento de solicitudes activas y emisión de actas de asignación.</p>
+        </article>
       </div>
     </section>
   </main>
