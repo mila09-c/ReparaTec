@@ -3,37 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INICIO — ReparaTec</title>
+  <title>Inicio — ReparaTec</title>
   <link rel="stylesheet" href="/src/css/home.css" />
 </head>
 <body>
   <div id="header-container"></div>
 
-  <main>
-    <section class="welcome-banner">
-      <div>
-        <h1 id="mensaje-bienvenida">PANEL PRINCIPAL — ReparaTec</h1>
+  <main class="home-main">
+    <section class="welcome-banner" aria-labelledby="mensaje-bienvenida">
+      <div class="welcome-content">
+        <span class="welcome-badge" id="rol-badge">PANEL OPERATIVO</span>
+        <h1 id="mensaje-bienvenida">Bienvenido a ReparaTec</h1>
+        <p id="subtitulo-bienvenida">Cargando accesos habilitados para tu perfil...</p>
       </div>
-      <a href="/equipos.html" class="btn-positivo">Ver Inventario</a>
+      <div class="welcome-actions">
+        <a href="/equipos.html" class="btn-positivo" id="btn-accion-principal">Ver Inventario</a>
+      </div>
     </section>
 
-    <section aria-labelledby="titulo-modulos">
-      <h2 class="section-title" id="titulo-modulos">Módulos del Sistema</h2>
+    <section class="modules-section" aria-labelledby="titulo-modulos">
+      <div class="section-header-row">
+        <div>
+          <span class="section-tag">ACCESO A LA PLATAFORMA</span>
+          <h2 class="section-title" id="titulo-modulos">Elige una sección</h2>
+        </div>
+      </div>
       <div class="modules-grid" id="modulos-grid"></div>
     </section>
 
-    <section id="equipos" aria-labelledby="titulo-equipos">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h2 class="section-title" id="titulo-equipos" style="margin-bottom: 0;">EQUIPOS</h2>
-        <a href="/equipos.html" class="module-link">Ver todos &rarr;</a>
+    <section id="equipos" class="equipos-section" aria-labelledby="titulo-equipos">
+      <div class="section-header-row">
+        <div>
+          <span class="section-tag">INVENTARIO GENERAL</span>
+          <h2 class="section-title" id="titulo-equipos">Equipos Registrados</h2>
+        </div>
+        <a href="/equipos.html" class="module-link">Ver inventario completo &rarr;</a>
       </div>
+
       <div class="table-container">
         <table>
           <thead>
             <tr>
               <th>Código</th>
               <th>Marca / Modelo</th>
-              <th>Hardware (CPU / RAM / Alm.)</th>
+              <th>Hardware (CPU / RAM)</th>
               <th>Sistema Operativo</th>
               <th>Perfil</th>
               <th>Estado</th>
@@ -47,8 +60,7 @@
 
   <div id="footer-container"></div>
 
-  <script type="module" src="/src/js/home.js"></script>
   <script type="module" src="/src/js/proteccion.js"></script>
-  
+  <script type="module" src="/src/js/home.js"></script>
 </body>
 </html>
