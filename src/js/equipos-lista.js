@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       (eq) => `
       <tr>
         <td><strong>${eq.Codigo_inventario}</strong></td>
-        <td>${eq.Marca} ${eq.Modelo}</td>
+        <td>${eq.Marca} ${eq.Modelo} <small style="display:block; opacity:0.75;">${eq.Nombre_Categoria}</small></td>
         <td>${eq.Procesador || 'N/D'} / ${eq.Memoria_ram || 'N/D'}</td>
         <td>${eq.Sistema_operativo || 'N/D'}</td>
         <td><span class="estado-pill">${eq.Estado_equipo}</span></td>
