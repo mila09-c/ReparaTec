@@ -11,6 +11,19 @@ export const CATEGORIAS = [
   { ID_Categoria: 10, Nombre_Categoria: 'Almacenamiento Externo', Descripcion: 'Discos duros y unidades externas de respaldo', Estado: 'Inactivo' }
 ];
 
+export const DONADORES = [
+  { ID_Donador: 1, Tipo_donador: 'Empresa', Direccion: 'Blvd. Hermanos Serdan 450, Puebla, Pue.', Estado: 'Activo' },
+  { ID_Donador: 2, Tipo_donador: 'Persona Fisica', Direccion: 'Calle 16 de Septiembre 112, Cholula, Pue.', Estado: 'Activo' },
+  { ID_Donador: 3, Tipo_donador: 'Empresa', Direccion: 'Av. Juarez 2840, Col. La Paz, Puebla, Pue.', Estado: 'Activo' },
+  { ID_Donador: 4, Tipo_donador: 'Institucion Educativa', Direccion: 'Circuito Universitario 100, Puebla, Pue.', Estado: 'Activo' },
+  { ID_Donador: 5, Tipo_donador: 'Persona Fisica', Direccion: 'Privada Las Flores 28, Tlaxcalancingo, Pue.', Estado: 'Activo' },
+  { ID_Donador: 6, Tipo_donador: 'Empresa', Direccion: 'Parque Industrial Puebla 2000, Lote 14, Pue.', Estado: 'Activo' },
+  { ID_Donador: 7, Tipo_donador: 'Asociacion', Direccion: 'Calle Reforma 75, Centro, Puebla, Pue.', Estado: 'Activo' },
+  { ID_Donador: 8, Tipo_donador: 'Persona Fisica', Direccion: 'Av. 31 Poniente 1905, Puebla, Pue.', Estado: 'Activo' },
+  { ID_Donador: 9, Tipo_donador: 'Empresa', Direccion: 'Calzada Zavaleta 3100, Puebla, Pue.', Estado: 'Activo' },
+  { ID_Donador: 10, Tipo_donador: 'Persona Fisica', Direccion: 'Calle 5 de Mayo 409, Atlixco, Pue.', Estado: 'Activo' }
+];
+
 export const DONACIONES = [
   { ID_Donacion: 1, Fecha_donacion: '2026-01-20', Tipo_entrega: 'Recoleccion', Observaciones: 'Lote corporativo por renovacion de flota', Estado: 'Completada', ID_Donador: 1 },
   { ID_Donacion: 2, Fecha_donacion: '2026-01-25', Tipo_entrega: 'Presencial', Observaciones: 'Laptop personal con cargador original', Estado: 'Completada', ID_Donador: 2 },
@@ -37,6 +50,18 @@ export const EQUIPOS = [
   { ID_Equipo: 10, Codigo_inventario: 'RPT-EQ-0010', Marca: 'Asus', Modelo: 'VivoBook X515', Numero_de_serie: 'SN-ASX515-010', Procesador: 'AMD Ryzen 5 5500U', Memoria_ram: '8 GB DDR4', Capacidad_almacenamiento: '512 GB SSD', Sistema_operativo: 'Windows 11 Home', Perfil_rendimiento: 'Alto', Fecha_registro: '2026-03-17', Estado_equipo: 'En reparacion', ID_Categoria: 1, ID_Donacion: 10 }
 ];
 
+export const TECNICOS = [
+  { ID_Tecnico: 1, Especialidad: 'Hardware y Microsoldadura', Disponibilidad: 'Disponible' },
+  { ID_Tecnico: 2, Especialidad: 'Sistemas Operativos y Redes', Disponibilidad: 'Disponible' },
+  { ID_Tecnico: 3, Especialidad: 'Laptops y Diagnóstico General', Disponibilidad: 'Ocupado' }
+];
+
+export const BENEFICIARIOS = [
+  { ID_Beneficiario: 1, Tipo_beneficiario: 'Institucion Educativa', Institucion: 'Primaria Benito Juarez', Necesidad_tecnologica: 'Equipos para aula de medios y apoyo escolar' },
+  { ID_Beneficiario: 2, Tipo_beneficiario: 'Asociacion Civil', Institucion: 'Casa de Cultura San Andres', Necesidad_tecnologica: 'Laptops para talleres comunitarios' },
+  { ID_Beneficiario: 3, Tipo_beneficiario: 'Estudiante', Institucion: 'Secundaria Tecnica 14', Necesidad_tecnologica: 'Equipo de escritorio para tareas y programación básica' }
+];
+
 export const HISTORIAL_EQUIPOS = [
   { ID_Historial: 1, Fecha_movimiento: '2026-01-21 10:30:00', Tipo_movimiento: 'Ingreso', Descripcion: 'Recepcion e inventario inicial de equipo donado', Ubicacion_anterior: 'Externo - Donador', Ubicacion_nueva: 'Almacen ReparaTec - Entrada', ID_Asignacion: 1, ID_Equipo: 1 },
   { ID_Historial: 2, Fecha_movimiento: '2026-02-16 12:00:00', Tipo_movimiento: 'Entrega', Descripcion: 'Entrega formal a Primaria Benito Juarez', Ubicacion_anterior: 'Almacen ReparaTec', Ubicacion_nueva: 'Primaria Benito Juarez - Aula Medios', ID_Asignacion: 1, ID_Equipo: 1 },
@@ -56,6 +81,18 @@ export async function obtenerCategorias() {
 
 export async function obtenerDonaciones() {
   return [...DONACIONES];
+}
+
+export async function obtenerDonadores() {
+  return [...DONADORES];
+}
+
+export async function obtenerTecnicos() {
+  return [...TECNICOS];
+}
+
+export async function obtenerBeneficiarios() {
+  return [...BENEFICIARIOS];
 }
 
 export async function obtenerEquipos() {

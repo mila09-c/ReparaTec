@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asignaciones — ReparaTec</title>
+  <link rel="stylesheet" href="/src/css/home.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+      <div>
+        <h1 class="section-title" style="margin-bottom: 0.25rem;">ASIGNACIONES Y ENTREGAS</h1>
+        <p style="margin: 0; opacity: 0.8;">Vincula solicitudes con equipos y actualiza el estado al registrar entrega</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="/solicitudes.html" class="module-link">Solicitudes &rarr;</a>
+        <a href="/historial-equipos.html" class="module-link">Historial de Equipos &rarr;</a>
+      </div>
+    </div>
+
+    <div id="mensaje-estado" style="margin-bottom: 1rem;"></div>
+
+    <section style="background: var(--color-blanco); border: 1px solid var(--color-borde); border-top: 5px solid var(--color-acento-oscuro); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 6px 16px rgba(30, 27, 75, 0.08);">
+      <h2 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.15rem;">Registrar Asignación / Entrega de Equipo</h2>
+      <form id="form-asignacion" novalidate style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+        <div class="form-group">
+          <label for="ID_Solicitud">Solicitud *</label>
+          <select id="ID_Solicitud" required>
+            <option value="">Seleccione una solicitud...</option>
+          </select>
+          <span class="error-msg" id="error-ID_Solicitud"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="ID_Equipo">Equipo a Vincular *</label>
+          <select id="ID_Equipo" required>
+            <option value="">Seleccione un equipo...</option>
+          </select>
+          <span class="error-msg" id="error-ID_Equipo"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Fecha_programada">Fecha Programada *</label>
+          <input type="date" id="Fecha_programada" required />
+          <span class="error-msg" id="error-Fecha_programada"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Fecha_entrega">Fecha de Entrega</label>
+          <input type="date" id="Fecha_entrega" />
+        </div>
+
+        <div class="form-group">
+          <label for="Estado">Estado de Asignación *</label>
+          <select id="Estado" required>
+            <option value="">Seleccione estado...</option>
+            <option value="Programada">Programada</option>
+            <option value="Entregada">Entregada</option>
+            <option value="Cancelada">Cancelada</option>
+          </select>
+          <span class="error-msg" id="error-Estado"></span>
+        </div>
+
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label for="Condiciones_entrega">Condiciones de Entrega *</label>
+          <input type="text" id="Condiciones_entrega" placeholder="Ej. Equipo entregado con cargador, sin daños visibles" required />
+          <span class="error-msg" id="error-Condiciones_entrega"></span>
+        </div>
+
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label for="Recomendaciones">Recomendaciones</label>
+          <input type="text" id="Recomendaciones" placeholder="Indicaciones de uso o cuidado al beneficiario" />
+        </div>
+
+        <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end;">
+          <button type="submit" class="btn-positivo">Guardar</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <h2 class="section-title">LISTADO DE ASIGNACIONES</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Solicitud / Beneficiario</th>
+              <th>Equipo Vinculado</th>
+              <th>Estado Equipo</th>
+              <th>Fechas</th>
+              <th>Condiciones / Recomendaciones</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-asignaciones-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="/src/js/asignaciones.js"></script>
+  <script type="module" src="/src/js/proteccion.js"></script>
+</body>
+</html>

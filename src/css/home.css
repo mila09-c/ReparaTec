@@ -2,68 +2,132 @@
 @import './header.css';
 @import './footer.css';
 
+.home-main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2.25rem 1.5rem 3.5rem;
+}
+
+/* Banner de bienvenida con acento tech-blueprint */
 .welcome-banner {
-  background: linear-gradient(120deg, var(--color-blanco) 55%, #FEF3C7 100%);
-  border: 1px solid var(--color-borde);
-  border-left: 6px solid var(--color-primario);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+  position: relative;
+  background-color: var(--color-acento-oscuro);
+  background-image: 
+    radial-gradient(circle at 12% 20%, rgba(14, 165, 233, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 88% 80%, rgba(16, 185, 129, 0.14) 0%, transparent 50%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 5px solid var(--color-primario);
+  border-radius: var(--radio-lg);
+  padding: 2rem 2.25rem;
+  margin-bottom: 2.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
-  box-shadow: 0 6px 16px rgba(30, 27, 75, 0.06);
+  gap: 1.5rem;
+  box-shadow: 0 16px 32px -12px rgba(11, 17, 32, 0.25);
+}
+
+.welcome-content {
+  max-width: 720px;
+}
+
+.welcome-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primario);
+  background: rgba(14, 165, 233, 0.14);
+  border: 1px solid rgba(14, 165, 233, 0.35);
+  padding: 0.28rem 0.8rem;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
 }
 
 .welcome-banner h1 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-acento-oscuro);
+  font-size: clamp(1.45rem, 2.5vw, 1.95rem);
+  font-weight: 800;
+  color: #F8FAFC;
+  margin-bottom: 0.35rem;
 }
 
 .welcome-banner p {
-  color: var(--color-texto-suave);
-  font-size: 0.95rem;
+  color: #CBD5E1;
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+.welcome-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Encabezados de sección */
+.modules-section {
+  margin-bottom: 3rem;
+}
+
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.35rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.section-tag {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primario-hover);
+  margin-bottom: 0.25rem;
 }
 
 .section-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--color-acento-oscuro);
-  padding-left: 0.65rem;
-  border-left: 4px solid var(--color-acento-calido);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-texto);
+  padding-left: 0.75rem;
+  border-left: 4px solid var(--color-primario);
 }
 
+/* Cuadrícula de módulos */
 .modules-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: 1.25rem;
-  margin-bottom: 2.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+  gap: 1.35rem;
 }
 
 .module-card {
-  background: linear-gradient(180deg, var(--color-blanco) 0%, #F8FAFC 100%);
+  background-color: var(--color-blanco);
   border: 1px solid var(--color-borde);
   border-top: 4px solid var(--color-primario);
-  border-radius: 0.75rem;
+  border-radius: var(--radio-lg);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: var(--sombra-suave);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.module-card:nth-child(even) {
+.module-card:nth-child(3n + 2) {
   border-top-color: var(--color-positivo);
 }
 
+.module-card:nth-child(3n) {
+  border-top-color: var(--color-acento-calido);
+}
+
 .module-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--color-acento-calido);
-  box-shadow: 0 10px 20px rgba(30, 27, 75, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 18px 28px -10px rgba(15, 23, 42, 0.12);
 }
 
 .module-card-header {
@@ -71,50 +135,54 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 0.75rem;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .module-card h3 {
-  font-size: 1.1rem;
+  font-size: 1.08rem;
   font-weight: 700;
-  color: var(--color-acento-oscuro);
+  color: var(--color-texto);
 }
 
 .badge-count {
-  background-color: #FEF3C7;
-  color: var(--color-acento-calido-hover);
-  border: 1px solid #FCD34D;
+  background-color: var(--color-superficie-suave);
+  color: var(--color-primario-hover);
+  border: 1px solid rgba(14, 165, 233, 0.28);
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   padding: 0.2rem 0.65rem;
   border-radius: 999px;
+  white-space: nowrap;
 }
 
 .module-card p {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--color-texto-suave);
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.35rem;
+  line-height: 1.55;
 }
 
 .module-link {
   font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--color-primario);
+  font-size: 0.88rem;
+  color: var(--color-primario-hover);
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
 }
 
 .module-link:hover {
-  color: var(--color-acento-calido-hover);
+  color: var(--color-primario);
+  transform: translateX(3px);
 }
 
+/* Tabla de equipos */
 .table-container {
   background-color: var(--color-blanco);
   border: 1px solid var(--color-borde);
-  border-radius: 0.75rem;
+  border-radius: var(--radio-lg);
   overflow-x: auto;
-  box-shadow: 0 6px 16px rgba(30, 27, 75, 0.06);
+  box-shadow: var(--sombra-suave);
 }
 
 table {
@@ -124,15 +192,20 @@ table {
   font-size: 0.9rem;
 }
 
-th, td {
-  padding: 0.85rem 1rem;
+th,
+td {
+  padding: 0.9rem 1rem;
   border-bottom: 1px solid var(--color-borde);
 }
 
 th {
   background-color: var(--color-acento-oscuro);
   color: var(--color-blanco);
-  font-weight: 600;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 tbody tr:nth-child(even) {
@@ -140,15 +213,29 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:hover {
-  background-color: #FEF3C7;
+  background-color: var(--color-superficie-suave);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .estado-pill {
-  padding: 0.25rem 0.65rem;
+  padding: 0.25rem 0.7rem;
   border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
   background-color: #D1FAE5;
   color: var(--color-positivo-hover);
   display: inline-block;
+}
+
+@media (max-width: 640px) {
+  .home-main {
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .welcome-banner {
+    padding: 1.4rem 1.25rem;
+  }
 }

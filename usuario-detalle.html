@@ -12,7 +12,7 @@
 
     <main class="container">
       <div id="detalle-usuario" class="card">
-        <h2 style="margin-bottom: 1.25rem; color: var(--color-acento-oscuro);">DETALLES DE USUARIO</h2>
+        <h2 class="card-title">DETALLES DE USUARIO</h2>
         <div class="detail-group"><strong>ID:</strong> <span id="det-id"></span></div>
         <div class="detail-group"><strong>Nombre Completo:</strong> <span id="det-nombre"></span></div>
         <div class="detail-group"><strong>Correo:</strong> <span id="det-correo"></span></div>
@@ -29,13 +29,13 @@
 
       <div id="mensaje-no-existe" class="card error-message" style="display: none;">
         <p>El usuario solicitado no existe.</p>
-        <a href="/usuarios-lista.html" class="btn btn-secondary" style="margin-top: 1rem;">Volver a la lista</a>
+        <a href="/usuarios-lista.html" class="btn btn-secondary">Volver a la lista</a>
       </div>
     </main>
 
     <div id="footer-container"></div>
 
-    <script type="module" src="/src/js/usuarios.js"></script>
     <script type="module" src="/src/js/proteccion.js"></script>
+    <script type="module" src="/src/js/usuarios.js"></script>
   </body>
 </html>

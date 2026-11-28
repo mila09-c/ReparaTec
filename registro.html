@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crear Cuenta — ReparaTec</title>
+  <link rel="stylesheet" href="/src/css/login.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main class="login-wrapper">
+    <div class="login-bg-grid" aria-hidden="true"></div>
+
+    <section class="login-card" style="max-width: 500px;" aria-labelledby="registro-title">
+      <div class="login-header">
+        <span class="login-badge">NUEVO REGISTRO</span>
+        <div class="login-logo-wrap">
+          <img src="/image/logo.jpg" alt="Logo ReparaTec" />
+        </div>
+        <h1 id="registro-title">Crear cuenta en ReparaTec</h1>
+        <p>Completa tus datos para participar como donador o beneficiario</p>
+      </div>
+
+      <form id="form-registro" novalidate>
+        <div class="form-group">
+          <label for="Nombre_Usuario">Nombre(s) *</label>
+          <input
+            type="text"
+            id="Nombre_Usuario"
+            name="Nombre_Usuario"
+            placeholder="Ej. Ana Sofía"
+            required
+          />
+          <span class="error-msg" id="error-Nombre_Usuario"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Apellido">Apellidos *</label>
+          <input
+            type="text"
+            id="Apellido"
+            name="Apellido"
+            placeholder="Ej. Torres López"
+            required
+          />
+          <span class="error-msg" id="error-Apellido"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Correo">Correo electrónico *</label>
+          <input
+            type="email"
+            id="Correo"
+            name="Correo"
+            placeholder="usuario@reparatec.org"
+            autocomplete="email"
+            required
+          />
+          <span class="error-msg" id="error-Correo"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Telefono">Teléfono *</label>
+          <input
+            type="tel"
+            id="Telefono"
+            name="Telefono"
+            placeholder="2221001001"
+            required
+          />
+          <span class="error-msg" id="error-Telefono"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="ID_Rol">Tipo de cuenta *</label>
+          <select id="ID_Rol" name="ID_Rol" required>
+            <option value="">Selecciona cómo deseas participar...</option>
+            <option value="3">Donador (Quiero donar equipos)</option>
+            <option value="4">Beneficiario (Solicito equipos para institución o uso social)</option>
+          </select>
+          <span class="error-msg" id="error-ID_Rol"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Contrasena_hash">Contraseña *</label>
+          <input
+            type="password"
+            id="Contrasena_hash"
+            name="Contrasena_hash"
+            placeholder="Mínimo 6 caracteres"
+            autocomplete="new-password"
+            required
+          />
+          <span class="error-msg" id="error-Contrasena_hash"></span>
+        </div>
+
+        <p class="error-banner" id="error-registro" role="alert" hidden></p>
+
+        <button type="submit" class="btn-positivo">Registrarme</button>
+      </form>
+
+      <div class="login-footer-note">
+        ¿Ya tienes una cuenta? <a href="login.html">Iniciar sesión</a>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="/src/js/registro.js"></script>
+</body>
+</html>

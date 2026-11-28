@@ -3,24 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FORMULARIO DE EQUIPO — ReparaTec</title>
+  <title>Formulario de Equipo — ReparaTec</title>
   <link rel="stylesheet" href="/src/css/login.css" />
 </head>
 <body>
   <div id="header-container"></div>
 
   <main class="login-wrapper">
-    <section class="login-card" style="max-width: 600px;">
+    <section class="login-card" style="max-width: 680px;">
       <div class="login-header">
-        <h1>Registrar / Editar Equipo</h1>
-        <p>Complete los datos correspondientes a la tabla EQUIPOS</p>
+        <h1>Registrar/Editar Equipo</h1>
+        <p>Complete los datos correspondientes: </p>
       </div>
 
       <form id="form-equipo" novalidate>
-        <div class="form-group">
-          <label for="Codigo_inventario">Código de Inventario *</label>
-          <input type="text" id="Codigo_inventario" placeholder="Ej. RT-LAP-004" required />
-          <span class="error-msg" id="error-Codigo_inventario"></span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="Codigo_inventario">Código de Inventario *</label>
+            <input type="text" id="Codigo_inventario" placeholder="Ej. RPT-EQ-0011" required />
+            <span class="error-msg" id="error-Codigo_inventario"></span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="ID_Categoria">Categoría *</label>
+            <select id="ID_Categoria" required>
+              <option value="">Seleccione una categoría...</option>
+            </select>
+            <span class="error-msg" id="error-ID_Categoria"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="Numero_de_serie">Número de Serie *</label>
+            <input type="text" id="Numero_de_serie" placeholder="Ej. SN-DL5420-011" required />
+            <span class="error-msg" id="error-Numero_de_serie"></span>
+          </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -29,29 +46,82 @@
             <input type="text" id="Marca" placeholder="Ej. Dell, HP, Lenovo" required />
             <span class="error-msg" id="error-Marca"></span>
           </div>
+
           <div class="form-group">
             <label for="Modelo">Modelo *</label>
             <input type="text" id="Modelo" placeholder="Ej. Latitude 5420" required />
             <span class="error-msg" id="error-Modelo"></span>
           </div>
+        </div>        
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="Procesador">Procesador</label>
+            <input type="text" id="Procesador" placeholder="Ej. Intel Core i5-1135G7 o N/A" />
+            <span class="error-msg" id="error-Procesador"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="Memoria_ram">Memoria RAM</label>
+            <input type="text" id="Memoria_ram" placeholder="Ej. 16 GB DDR4 o N/A" />
+            <span class="error-msg" id="error-Memoria_ram"></span>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="Numero_de_serie">Número de Serie *</label>
-          <input type="text" id="Numero_de_serie" placeholder="Ej. SN123456X" required />
-          <span class="error-msg" id="error-Numero_de_serie"></span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="Capacidad_almacenamiento">Capacidad de Almacenamiento</label>
+            <input type="text" id="Capacidad_almacenamiento" placeholder="Ej. 512 GB NVMe o N/A" />
+            <span class="error-msg" id="error-Capacidad_almacenamiento"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="Sistema_operativo">Sistema Operativo</label>
+            <input type="text" id="Sistema_operativo" placeholder="Ej. Ubuntu 24.04 LTS / Windows 11 Pro" />
+            <span class="error-msg" id="error-Sistema_operativo"></span>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="Estado_equipo">Estado del Equipo *</label>
-          <select id="Estado_equipo" required>
-            <option value="">Seleccione un estado...</option>
-            <option value="Operativo">Operativo</option>
-            <option value="En reparación">En reparación</option>
-            <option value="Asignado">Asignado</option>
-            <option value="Baja">Baja</option>
-          </select>
-          <span class="error-msg" id="error-Estado_equipo"></span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="Perfil_rendimiento">Perfil de Rendimiento *</label>
+            <select id="Perfil_rendimiento" required>
+              <option value="">Seleccione...</option>
+              <option value="Basico">Básico</option>
+              <option value="Medio">Medio</option>
+              <option value="Alto">Alto</option>
+            </select>
+            <span class="error-msg" id="error-Perfil_rendimiento"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="Fecha_registro">Fecha de Registro *</label>
+            <input type="date" id="Fecha_registro" required />
+            <span class="error-msg" id="error-Fecha_registro"></span>
+          </div>
+
+           <div class="form-group">
+            <label for="ID_Donacion">Donación de Origen *</label>
+            <select id="ID_Donacion" required>
+              <option value="">Seleccione una donación...</option>
+            </select>
+            <span class="error-msg" id="error-ID_Donacion"></span>
+          </div>
+        </div>
+
+          <div class="form-group">
+            <label for="Estado_equipo">Estado del Equipo *</label>
+            <select id="Estado_equipo" required>
+              <option value="">Seleccione un estado...</option>
+              <option value="Listo para asignar">Listo para asignar</option>
+              <option value="Asignado">Asignado</option>
+              <option value="En reparacion">En reparación</option>
+              <option value="Diagnosticado">Diagnosticado</option>
+              <option value="En revision">En revisión</option>
+              <option value="Baja">Baja</option>
+            </select>
+            <span class="error-msg" id="error-Estado_equipo"></span>
+          </div>
         </div>
 
         <button type="submit" class="btn-positivo" style="width: 100%;">Guardar Equipo</button>
@@ -62,7 +132,6 @@
   <div id="footer-container"></div>
 
   <script type="module" src="/src/js/equipos-form.js"></script>
-      <script type="module" src="/src/js/proteccion.js"></script>
-
+  <script type="module" src="/src/js/proteccion.js"></script>
 </body>
 </html>

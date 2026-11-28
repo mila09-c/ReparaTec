@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solicitudes — ReparaTec</title>
+  <link rel="stylesheet" href="/src/css/home.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+      <div>
+        <h1 class="section-title" style="margin-bottom: 0.25rem;">SOLICITUDES DE EQUIPO</h1>
+        <p style="margin: 0; opacity: 0.8;">Peticiones registradas por beneficiarios</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="/beneficiarios.html" class="module-link">Beneficiarios &rarr;</a>
+        <a href="/asignaciones.html" class="module-link">Asignaciones &rarr;</a>
+      </div>
+    </div>
+
+    <div id="mensaje-estado" style="margin-bottom: 1rem;"></div>
+
+    <section style="background: var(--color-blanco); border: 1px solid var(--color-borde); border-top: 5px solid var(--color-acento-oscuro); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 6px 16px rgba(30, 27, 75, 0.08);">
+      <h2 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.15rem;">Nueva Solicitud</h2>
+      <form id="form-solicitud" novalidate style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem;">
+        <div class="form-group">
+          <label for="ID_Beneficiario">Beneficiario *</label>
+          <select id="ID_Beneficiario" required>
+            <option value="">Seleccione un beneficiario...</option>
+          </select>
+          <span class="error-msg" id="error-ID_Beneficiario"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Fecha_solicitud">Fecha de Solicitud *</label>
+          <input type="date" id="Fecha_solicitud" required />
+          <span class="error-msg" id="error-Fecha_solicitud"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Prioridad">Prioridad *</label>
+          <select id="Prioridad" required>
+            <option value="">Seleccione prioridad...</option>
+            <option value="Baja">Baja</option>
+            <option value="Media">Media</option>
+            <option value="Alta">Alta</option>
+          </select>
+          <span class="error-msg" id="error-Prioridad"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Estado">Estado *</label>
+          <select id="Estado" required>
+            <option value="">Seleccione estado...</option>
+            <option value="En revision">En revisión</option>
+            <option value="Aprobada">Aprobada</option>
+            <option value="Rechazada">Rechazada</option>
+            <option value="Atendida">Atendida</option>
+          </select>
+          <span class="error-msg" id="error-Estado"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Motivo">Motivo *</label>
+          <input type="text" id="Motivo" placeholder="Ej. Apoyo escolar o taller" required />
+          <span class="error-msg" id="error-Motivo"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="Uso_destinado">Uso Destinado *</label>
+          <input type="text" id="Uso_destinado" placeholder="Ej. Clases en línea, laboratorio" required />
+          <span class="error-msg" id="error-Uso_destinado"></span>
+        </div>
+
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label for="Observaciones">Observaciones</label>
+          <input type="text" id="Observaciones" placeholder="Notas adicionales" />
+        </div>
+
+        <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end;">
+          <button type="submit" class="btn-positivo">Registrar Solicitud</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <h2 class="section-title">LISTADO DE SOLICITUDES</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Beneficiario</th>
+              <th>Fecha</th>
+              <th>Motivo / Uso Destinado</th>
+              <th>Prioridad</th>
+              <th>Estado</th>
+              <th>Observaciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-solicitudes-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="/src/js/solicitudes.js"></script>
+  <script type="module" src="/src/js/proteccion.js"></script>
+</body>
+</html>

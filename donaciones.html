@@ -3,23 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DONACIONES Y DONADORES — ReparaTec</title>
+  <title>Donaciones — ReparaTec</title>
   <link rel="stylesheet" href="/src/css/home.css" />
 </head>
 <body>
   <div id="header-container"></div>
 
-  <main>
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
-      <div>
-        <h1 class="section-title" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Recepción de Donaciones</h1>
-        <p style="color: var(--color-texto-suave); font-size: 0.9rem;">DONACIONES Y DONADORES.</p>
+  <main class="home-main">
+    <section class="welcome-banner" aria-labelledby="titulo-donaciones">
+      <div class="welcome-content">
+        <span class="welcome-badge" id="donaciones-badge">Donaciones</span>
+        <h1 id="titulo-donaciones">Recepción de Donaciones</h1>
+        <p id="subtitulo-donaciones">Seguimiento de donaciones recibidas y registro de donadores.</p>
       </div>
-      <a href="/formulario-equipo.html" class="btn-positivo">+ Registrar Equipo</a>
-    </div>
+      <div class="welcome-actions">
+        <a href="/formulario-equipo.html" class="btn-positivo">+ Registrar Equipo</a>
+      </div>
+    </section>
 
-    <section style="margin-bottom: 2.5rem;">
-      <h2 class="section-title">REGISTRO DE DONACIONES</h2>
+    <section class="modules-section" aria-labelledby="subtitulo-registro-donaciones">
+      <div class="section-header-row">
+        <div>
+          <span class="section-tag">LISTA DE REGISTROS</span>
+          <h2 class="section-title" id="subtitulo-registro-donaciones">REGISTRO DE DONACIONES</h2>
+        </div>
+      </div>
       <div class="table-container">
         <table>
           <thead>
@@ -38,8 +46,13 @@
       </div>
     </section>
 
-    <section>
-      <h2 class="section-title">DIRECTORIO DE DONADORES</h2>
+    <section id="seccion-donadores" aria-labelledby="subtitulo-directorio-donadores">
+      <div class="section-header-row">
+        <div>
+          <span class="section-tag">DONADORES</span>
+          <h2 class="section-title" id="subtitulo-directorio-donadores">DIRECTORIO DE DONADORES</h2>
+        </div>
+      </div>
       <div class="table-container">
         <table>
           <thead>
@@ -58,6 +71,7 @@
 
   <div id="footer-container"></div>
 
+  <script type="module" src="/src/js/proteccion.js"></script>
   <script type="module" src="/src/js/donaciones.js"></script>
 </body>
 </html>
